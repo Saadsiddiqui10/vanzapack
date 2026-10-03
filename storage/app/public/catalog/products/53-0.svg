@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6f2cf"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+  <rect width="800" height="800" fill="url(#g)"/>
+  <rect x="600" y="-40" width="230" height="230" rx="40" fill="#5e8226" opacity="0.08" transform="rotate(18 700 80)"/>
+  <g transform="translate(354, 288)">
+    <rect width="92" height="92" rx="20" fill="#5e8226"/>
+    <path d="M18 30 L46 16 L74 30 L74 62 L46 78 L18 62 Z" fill="none" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M18 30 L46 44 L74 30 M46 44 L46 78" stroke="#ffffff" stroke-width="5" fill="none"/>
+  </g>
+  <text x="400" y="438" text-anchor="middle" font-family="Poppins, Segoe UI, Arial, sans-serif" font-size="40" font-weight="700" fill="#2c3d13">Square Bottom Bags</text><text x="400" y="490" text-anchor="middle" font-family="Poppins, Segoe UI, Arial, sans-serif" font-size="40" font-weight="700" fill="#2c3d13">Bulk Carton</text>
+  <text x="400" y="800" dy="-58" text-anchor="middle" font-family="Figtree, Segoe UI, Arial, sans-serif" font-size="24" fill="#5e8226">Paper Products</text>
+  <text x="400" y="800" dy="-26" text-anchor="middle" font-family="Figtree, Segoe UI, Arial, sans-serif" font-size="15" letter-spacing="2" fill="#94a3b8">GREENCRATE</text>
+</svg>
