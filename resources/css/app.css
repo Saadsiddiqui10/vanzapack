@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-white text-slate-700 antialiased;
+    }
+
+    /* headings: dark GREEN (readable, was navy) */
+    h1, h2, h3, h4 {
+        @apply font-display text-brand-800;
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-brand-500 ring-offset-2;
+    }
+}
+
+@layer components {
+    .container-page {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold
+               transition focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+    /* bright primary green (#95C93F) */
+    .btn-primary {
+        @apply btn bg-brand-500 text-white hover:bg-brand-600 focus-visible:ring-brand-500;
+    }
+    /* secondary solid button — brand secondary navy #000066 */
+    .btn-navy {
+        @apply btn bg-navy-600 text-white hover:bg-navy-700 focus-visible:ring-navy-600;
+    }
+    .btn-outline {
+        @apply btn border border-slate-300 bg-white text-brand-700 hover:border-brand-500 hover:text-brand-600;
+    }
+    .btn-ghost {
+        @apply btn text-brand-700 hover:bg-slate-100;
+    }
+
+    .field {
+        @apply w-full rounded-lg border-slate-300 text-sm shadow-sm focus:border-brand-500 focus:ring-brand-500;
+    }
+    .label {
+        @apply mb-1.5 block text-sm font-medium text-brand-800;
+    }
+
+    .badge {
+        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+    }
+
+    .card {
+        @apply rounded-2xl border border-slate-100 bg-white shadow-card;
+    }
+
+    .link {
+        @apply text-brand-700 underline-offset-2 hover:underline;
+    }
+
+    .prose-cms {
+        @apply max-w-none leading-relaxed text-slate-600;
+    }
+    .prose-cms h2 { @apply mt-8 mb-3 text-xl font-semibold text-brand-800; }
+    .prose-cms h3 { @apply mt-6 mb-2 text-lg font-semibold text-brand-800; }
+    .prose-cms p { @apply mb-4; }
+    .prose-cms ul { @apply mb-4 list-disc space-y-1 pl-6; }
+    .prose-cms ol { @apply mb-4 list-decimal space-y-1 pl-6; }
+    .prose-cms a { @apply link; }
+}
+
+/* Hide number input spinners for quantity fields */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty-input { -moz-appearance: textfield; }
+
+[x-cloak] { display: none !important; }
+
+/* ── Marquee (announcement bar, brand + category strips) ── */
+.marquee {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+}
+.marquee__track {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--marquee-gap, 3rem);
+    min-width: 100%;
+    animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(-100% - var(--marquee-gap, 3rem))); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+    .marquee { overflow-x: auto; }
+}
