@@ -48,10 +48,20 @@
             'name' => $storeName,
             'url' => url('/'),
             'logo' => asset('images/logo.png'),
+            'email' => settings('store_email', config('store.email')),
+            'sameAs' => array_values(array_filter([settings('social_linkedin')])),
             'contactPoint' => [
-                '@type' => 'ContactPoint',
-                'telephone' => settings('store_phone', config('store.phone')),
-                'contactType' => 'customer service',
+                [
+                    '@type' => 'ContactPoint',
+                    'telephone' => settings('store_phone', config('store.phone')),
+                    'email' => settings('store_support_email', config('store.support_email')),
+                    'contactType' => 'customer service',
+                ],
+                [
+                    '@type' => 'ContactPoint',
+                    'email' => settings('store_sales_email', config('store.sales_email')),
+                    'contactType' => 'sales',
+                ],
             ],
         ], JSON_UNESCAPED_SLASHES) !!}
     </script>

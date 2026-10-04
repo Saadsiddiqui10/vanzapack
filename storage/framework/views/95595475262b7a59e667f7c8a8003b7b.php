@@ -25,7 +25,11 @@
                 </p>
                 <div class="mt-4 space-y-1 text-sm text-slate-300">
                     <p>📞 <?php echo e(settings('store_phone', config('store.phone'))); ?></p>
-                    <p>✉️ <?php echo e(settings('store_email', config('store.email'))); ?></p>
+                    <?php $__currentLoopData = ['store_email' => 'Info', 'store_sales_email' => 'Sales', 'store_support_email' => 'Support']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($email = settings($key, config('store.'.str_replace('store_', '', $key)))): ?>
+                            <p>✉️ <?php echo e($label); ?>: <a href="mailto:<?php echo e($email); ?>" class="hover:text-white"><?php echo e($email); ?></a></p>
+                        <?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <p>📍 <?php echo e(settings('store_address', config('store.address'))); ?></p>
                 </div>
             </div>
@@ -65,10 +69,13 @@
         <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row">
             <p>&copy; <?php echo e(date('Y')); ?> <?php echo e(settings('store_name', 'VanzaPack')); ?>. All rights reserved.</p>
             <div class="flex gap-4">
-                <a href="<?php echo e(settings('social_facebook', '#')); ?>" class="hover:text-white">Facebook</a>
-                <a href="<?php echo e(settings('social_instagram', '#')); ?>" class="hover:text-white">Instagram</a>
-                <a href="<?php echo e(settings('social_linkedin', '#')); ?>" class="hover:text-white">LinkedIn</a>
-                <a href="<?php echo e(settings('social_tiktok', '#')); ?>" class="hover:text-white">TikTok</a>
+                
+                <?php $__currentLoopData = ['social_facebook' => 'Facebook', 'social_instagram' => 'Instagram', 'social_linkedin' => 'LinkedIn', 'social_tiktok' => 'TikTok']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php ($url = settings($key)); ?>
+                    <?php if($url && trim((string) parse_url($url, PHP_URL_PATH), '/') !== ''): ?>
+                        <a href="<?php echo e($url); ?>" target="_blank" rel="noopener" class="hover:text-white"><?php echo e($label); ?></a>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>

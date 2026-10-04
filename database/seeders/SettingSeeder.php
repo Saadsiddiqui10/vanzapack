@@ -15,7 +15,9 @@ class SettingSeeder extends Seeder
         $defaults = [
             ['store_name', 'VanzaPack', 'general', 'string'],
             ['store_tagline', 'Sustainable packaging & food-service supplies', 'general', 'string'],
-            ['store_email', 'contact@vanzapack.test', 'general', 'string'],
+            ['store_email', 'info@vanzapack.com', 'general', 'string'],
+            ['store_sales_email', 'sales@vanzapack.com', 'general', 'string'],
+            ['store_support_email', 'support@vanzapack.com', 'general', 'string'],
             ['store_phone', '+971 52 399 3759', 'general', 'string'],
             ['store_landline', '04-3235340', 'general', 'string'],
             ['store_address', 'Warehouse 17-20, 22nd Street, Al Quoz Industrial Area 3, Dubai', 'general', 'string'],
@@ -49,15 +51,15 @@ class SettingSeeder extends Seeder
             ['social_instagram', 'https://instagram.com', 'social', 'string'],
             ['social_tiktok', 'https://tiktok.com', 'social', 'string'],
             ['social_youtube', 'https://youtube.com', 'social', 'string'],
-            ['social_linkedin', 'https://linkedin.com', 'social', 'string'],
+            ['social_linkedin', 'https://www.linkedin.com/in/vanza-pack-852122441/', 'social', 'string'],
             ['social_x', 'https://x.com', 'social', 'string'],
 
-            ['seo_default_title', 'VanzaPack — Sustainable Packaging & Food-Service Supplies', 'seo', 'string'],
+            ['seo_default_title', 'VanzaPack â€” Sustainable Packaging & Food-Service Supplies', 'seo', 'string'],
             ['seo_default_description', 'VanzaPack supplies premium eco-friendly packaging, tableware, tissues and food-service essentials to restaurants, cafes and retailers across the UAE.', 'seo', 'string'],
             ['seo_default_keywords', 'packaging, bagasse, paper cups, food service, eco friendly, UAE', 'seo', 'string'],
             ['google_analytics_id', '', 'seo', 'string'],
 
-            ['announcement_text', 'Enjoy Free Delivery on Orders Above AED 99  •  10% OFF your first order — code WELCOME10', 'general', 'string'],
+            ['announcement_text', 'Enjoy Free Delivery on Orders Above AED 99  â€¢  10% OFF your first order â€” code WELCOME10', 'general', 'string'],
         ];
 
         foreach ($defaults as [$key, $value, $group, $type]) {

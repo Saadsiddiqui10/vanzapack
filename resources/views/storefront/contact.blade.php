@@ -7,7 +7,14 @@
 
                 <dl class="mt-6 space-y-3 text-sm">
                     <div><dt class="font-semibold text-brand-800">Phone</dt><dd class="text-slate-600">{{ settings('store_phone', config('store.phone')) }}</dd></div>
-                    <div><dt class="font-semibold text-brand-800">Email</dt><dd class="text-slate-600">{{ settings('store_email', config('store.email')) }}</dd></div>
+                    @foreach(['store_email' => 'General enquiries', 'store_sales_email' => 'Sales & quotes', 'store_support_email' => 'Customer support'] as $key => $label)
+                        @if($email = settings($key, config('store.'.str_replace('store_', '', $key))))
+                            <div><dt class="font-semibold text-brand-800">{{ $label }}</dt><dd><a href="mailto:{{ $email }}" class="text-slate-600 hover:text-brand-600">{{ $email }}</a></dd></div>
+                        @endif
+                    @endforeach
+                    @if(($linkedin = settings('social_linkedin')) && trim((string) parse_url($linkedin, PHP_URL_PATH), '/') !== '')
+                        <div><dt class="font-semibold text-brand-800">LinkedIn</dt><dd><a href="{{ $linkedin }}" target="_blank" rel="noopener" class="text-slate-600 hover:text-brand-600">Follow VanzaPack on LinkedIn</a></dd></div>
+                    @endif
                     <div><dt class="font-semibold text-brand-800">Warehouse</dt><dd class="text-slate-600">{{ settings('store_address', config('store.address')) }}</dd></div>
                     <div><dt class="font-semibold text-brand-800">Hours</dt><dd class="text-slate-600">{{ settings('business_hours', config('store.business_hours')) }}</dd></div>
                 </dl>

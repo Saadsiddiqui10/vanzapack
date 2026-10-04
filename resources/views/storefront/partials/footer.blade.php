@@ -25,7 +25,11 @@
                 </p>
                 <div class="mt-4 space-y-1 text-sm text-slate-300">
                     <p>📞 {{ settings('store_phone', config('store.phone')) }}</p>
-                    <p>✉️ {{ settings('store_email', config('store.email')) }}</p>
+                    @foreach(['store_email' => 'Info', 'store_sales_email' => 'Sales', 'store_support_email' => 'Support'] as $key => $label)
+                        @if($email = settings($key, config('store.'.str_replace('store_', '', $key))))
+                            <p>✉️ {{ $label }}: <a href="mailto:{{ $email }}" class="hover:text-white">{{ $email }}</a></p>
+                        @endif
+                    @endforeach
                     <p>📍 {{ settings('store_address', config('store.address')) }}</p>
                 </div>
             </div>
@@ -65,10 +69,13 @@
         <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row">
             <p>&copy; {{ date('Y') }} {{ settings('store_name', 'VanzaPack') }}. All rights reserved.</p>
             <div class="flex gap-4">
-                <a href="{{ settings('social_facebook', '#') }}" class="hover:text-white">Facebook</a>
-                <a href="{{ settings('social_instagram', '#') }}" class="hover:text-white">Instagram</a>
-                <a href="{{ settings('social_linkedin', '#') }}" class="hover:text-white">LinkedIn</a>
-                <a href="{{ settings('social_tiktok', '#') }}" class="hover:text-white">TikTok</a>
+                {{-- Only real profile URLs (skips "#" and bare homepages like https://facebook.com) --}}
+                @foreach(['social_facebook' => 'Facebook', 'social_instagram' => 'Instagram', 'social_linkedin' => 'LinkedIn', 'social_tiktok' => 'TikTok'] as $key => $label)
+                    @php($url = settings($key))
+                    @if($url && trim((string) parse_url($url, PHP_URL_PATH), '/') !== '')
+                        <a href="{{ $url }}" target="_blank" rel="noopener" class="hover:text-white">{{ $label }}</a>
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
