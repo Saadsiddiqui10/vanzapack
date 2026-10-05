@@ -18,9 +18,9 @@ class SettingSeeder extends Seeder
             ['store_email', 'info@vanzapack.com', 'general', 'string'],
             ['store_sales_email', 'sales@vanzapack.com', 'general', 'string'],
             ['store_support_email', 'support@vanzapack.com', 'general', 'string'],
-            ['store_phone', '+971 52 399 3759', 'general', 'string'],
-            ['store_landline', '04-3235340', 'general', 'string'],
-            ['store_address', 'Warehouse 17-20, 22nd Street, Al Quoz Industrial Area 3, Dubai', 'general', 'string'],
+            ['store_phone', '+971 4 262 7225', 'general', 'string'],
+            ['store_landline', '+971 4 262 7225', 'general', 'string'],
+            ['store_address', 'Down Town Jebel Ali St 19, JAFZA View, 1st Floor Tower 18, Dubai, United Arab Emirates', 'general', 'string'],
             ['business_hours', 'Monday - Saturday : 9:00AM - 6:00PM', 'general', 'string'],
             ['currency', 'AED', 'general', 'string'],
             ['timezone', 'Asia/Dubai', 'general', 'string'],
@@ -32,8 +32,8 @@ class SettingSeeder extends Seeder
             ['free_shipping_threshold', 99, 'store', 'int'],
 
             ['whatsapp_country_code', '971', 'whatsapp', 'string'],
-            ['whatsapp_phone', '523993759', 'whatsapp', 'string'],
-            ['whatsapp_default_message', 'Hello VanzaPack, I have a question about your products.', 'whatsapp', 'string'],
+            ['whatsapp_phone', '505021026', 'whatsapp', 'string'],
+            ['whatsapp_default_message', 'Hello, Good Day. I would like to connect with the Vanza Pack Web Sales Team regarding your products and services', 'whatsapp', 'string'],
             ['whatsapp_product_enabled', true, 'whatsapp', 'bool'],
             ['whatsapp_cart_enabled', true, 'whatsapp', 'bool'],
             ['whatsapp_order_enabled', true, 'whatsapp', 'bool'],
@@ -54,12 +54,12 @@ class SettingSeeder extends Seeder
             ['social_linkedin', 'https://www.linkedin.com/in/vanza-pack-852122441/', 'social', 'string'],
             ['social_x', 'https://x.com', 'social', 'string'],
 
-            ['seo_default_title', 'VanzaPack â€” Sustainable Packaging & Food-Service Supplies', 'seo', 'string'],
+            ['seo_default_title', 'VanzaPack — Sustainable Packaging & Food-Service Supplies', 'seo', 'string'],
             ['seo_default_description', 'VanzaPack supplies premium eco-friendly packaging, tableware, tissues and food-service essentials to restaurants, cafes and retailers across the UAE.', 'seo', 'string'],
             ['seo_default_keywords', 'packaging, bagasse, paper cups, food service, eco friendly, UAE', 'seo', 'string'],
             ['google_analytics_id', '', 'seo', 'string'],
 
-            ['announcement_text', 'Enjoy Free Delivery on Orders Above AED 99  â€¢  10% OFF your first order â€” code WELCOME10', 'general', 'string'],
+            ['announcement_text', 'Enjoy Free Delivery on Orders Above AED 99  •  10% OFF your first order — code WELCOME10', 'general', 'string'],
         ];
 
         foreach ($defaults as [$key, $value, $group, $type]) {
