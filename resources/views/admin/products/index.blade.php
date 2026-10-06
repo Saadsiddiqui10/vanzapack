@@ -2,7 +2,7 @@
     <x-admin.head title="Products">
         <x-slot:actions>
             <a href="{{ route('admin.exports.download', 'products') }}" class="btn-outline py-2 text-sm">Export CSV</a>
-            <a href="{{ route('admin.products.import.form') }}" class="btn-outline py-2 text-sm">Import CSV</a>
+            <a href="{{ route('admin.products.import.form') }}" class="btn-outline py-2 text-sm">Import CSV / Photos</a>
             <a href="{{ route('admin.products.create') }}" class="btn-primary py-2 text-sm">New product</a>
         </x-slot:actions>
     </x-admin.head>
