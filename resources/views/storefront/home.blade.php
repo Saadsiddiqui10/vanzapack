@@ -90,7 +90,7 @@
                                              class="h-full w-full object-cover transition group-hover:scale-105" loading="lazy">
                                     </div>
                                     <div class="p-3">
-                                        <p class="text-sm font-semibold text-brand-800">{{ $category->name }}</p>
+                                        <p class="truncate text-sm font-semibold text-brand-800" title="{{ $category->name }}">{{ $category->name }}</p>
                                         <p class="text-xs text-slate-400">{{ $category->products_count }} products</p>
                                     </div>
                                 </a>

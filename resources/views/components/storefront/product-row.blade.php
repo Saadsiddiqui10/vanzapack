@@ -12,7 +12,7 @@
 
         <div class="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-5">
             @foreach($products as $product)
-                <div class="w-56 shrink-0 snap-start sm:w-auto">
+                <div class="flex w-56 shrink-0 snap-start sm:w-auto">
                     <x-product-card :product="$product" />
                 </div>
             @endforeach

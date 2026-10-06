@@ -87,6 +87,7 @@
 /* ── Marquee (announcement bar, brand + category strips) ── */
 .marquee {
     display: flex;
+    gap: var(--marquee-gap, 3rem); /* same spacing between the two looping tracks as between items */
     overflow: hidden;
     user-select: none;
 }
