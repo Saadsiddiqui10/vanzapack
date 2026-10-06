@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('code') — {{ config('app.name', 'VanzaPack') }}</title>
+    {{-- Static links only: error pages must render even when the database is down --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     @vite('resources/css/app.css')
 </head>
 <body class="flex min-h-screen items-center justify-center bg-slate-50 p-6 text-slate-700">

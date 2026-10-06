@@ -39,7 +39,7 @@
     <meta name="twitter:description" content="{{ $desc }}">
     <meta name="twitter:image" content="{{ $image }}">
 
-    <link rel="icon" href="{{ media(settings('favicon'), asset('favicon.ico')) }}">
+    @include('partials.favicons')
 
     <script type="application/ld+json">
         {!! json_encode([
