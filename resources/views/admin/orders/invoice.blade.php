@@ -5,7 +5,7 @@
     <title>Invoice {{ $order->number }}</title>
     <style>
         body { font-family: system-ui, sans-serif; color: #1e293b; padding: 40px; max-width: 720px; margin: auto; }
-        h1 { color: #000066; }
+        h1 { color: #063d2a; }
         table { width: 100%; border-collapse: collapse; margin-top: 16px; }
         th, td { text-align: left; padding: 8px; border-bottom: 1px solid #e2e8f0; }
         .right { text-align: right; }

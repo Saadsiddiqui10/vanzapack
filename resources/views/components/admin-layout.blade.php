@@ -47,7 +47,7 @@
 <div class="flex min-h-full">
     {{-- Sidebar --}}
     <aside :class="sidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-           class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full overflow-y-auto bg-navy-600 text-slate-200 transition-transform lg:static lg:translate-x-0">
+           class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full overflow-y-auto bg-gradient-to-b from-brand-700 to-brand-800 text-slate-200 transition-transform lg:static lg:translate-x-0">
         <div class="px-4 py-4">
             <div class="rounded-lg bg-white px-3 py-2">
                 <img src="{{ asset('images/logo.png') }}" alt="VanzaPack" class="h-9 w-auto">
@@ -56,10 +56,11 @@
         <nav class="px-3 pb-10 text-sm">
             @foreach($nav as $item)
                 @if(isset($item['heading']))
-                    <p class="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-white/40">{{ $item['heading'] }}</p>
+                    <p class="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-wider text-accent/80">{{ $item['heading'] }}</p>
                 @elseif(is_null($item['perm']) || $user->hasPermission($item['perm']))
+                    {{-- Same colours as the storefront nav: logo green, yellow for the current page --}}
                     <a href="{{ route($item['route']) }}"
-                       class="block rounded-lg px-3 py-2 {{ $active === $item['key'] ? 'bg-white/15 font-semibold text-white' : 'text-slate-300 hover:bg-white/10' }}">
+                       class="block rounded-r-lg border-l-4 px-3 py-2 transition {{ $active === $item['key'] ? 'border-accent bg-white/10 font-semibold text-white' : 'border-transparent text-white/75 hover:bg-white/10 hover:text-accent' }}">
                         {{ $item['label'] }}
                     </a>
                 @endif
@@ -70,7 +71,7 @@
     <div x-show="sidebar" @click="sidebar=false" class="fixed inset-0 z-30 bg-black/30 lg:hidden" x-cloak></div>
 
     <div class="flex min-w-0 flex-1 flex-col">
-        <header class="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+        <header class="sticky top-0 z-20 flex items-center justify-between border-b-4 border-brand-700 bg-white px-4 py-3 shadow-sm">
             <button class="lg:hidden" @click="sidebar = true" aria-label="Menu">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
