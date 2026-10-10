@@ -10,7 +10,12 @@
 
 @php
     $storeName = settings('store_name', config('store.name'));
-    $pageTitle = $title ? $title.' — '.$storeName : settings('seo_default_title', $storeName);
+    // Brand first: "VanzaPack | Shop All Products". SEO titles that already end with the
+    // store name (e.g. "Kraft Cups | VanzaPack UAE") have that suffix removed to avoid repeating it.
+    $cleanTitle = $title ? trim(preg_replace('/\s*[|—–-]\s*'.preg_quote($storeName, '/').'(\s+UAE)?\s*$/iu', '', $title)) : '';
+    $pageTitle = $cleanTitle !== '' && mb_strtolower($cleanTitle) !== mb_strtolower($storeName)
+        ? $storeName.' | '.$cleanTitle
+        : settings('seo_default_title', $storeName);
     $desc = $metaDescription ?: settings('seo_default_description');
     $image = $ogImage ?: asset('images/og-default.png');
     $canonicalUrl = $canonical ?: url()->current();

@@ -39,7 +39,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title }} · {{ settings('store_name', 'VanzaPack') }} Admin</title>
+    <title>{{ settings('store_name', 'VanzaPack') }} Admin | {{ $title }}</title>
     @include('partials.favicons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

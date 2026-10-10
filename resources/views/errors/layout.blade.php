@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('code') — {{ config('app.name', 'VanzaPack') }}</title>
+    <title>VanzaPack | @yield('title')</title>
     {{-- Static links only: error pages must render even when the database is down --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">

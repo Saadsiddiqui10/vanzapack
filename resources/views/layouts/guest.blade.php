@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'VanzaPack') }}</title>
+    <title>VanzaPack | {{ match (true) { request()->routeIs('register') => 'Create Account', request()->routeIs('password.*') => 'Reset Password', request()->routeIs('verification.*') => 'Verify Email', default => 'Log In' } }}</title>
     @include('partials.favicons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
