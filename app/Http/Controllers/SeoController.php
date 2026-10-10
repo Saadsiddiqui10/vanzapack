@@ -25,9 +25,27 @@ class SeoController extends Controller
         $this->collect($urls, Product::query()->where('status', 'active'), 'product.show', '0.8', 'weekly');
         $this->collect($urls, Page::query()->where('is_published', true), 'page.show', '0.4', 'monthly');
 
-        return response()
-            ->view('seo.sitemap', ['urls' => $urls])
-            ->header('Content-Type', 'application/xml; charset=UTF-8');
+        // Built with XMLWriter rather than a Blade view: a "<?xml" line in a template breaks
+        // on servers with PHP's short_open_tag enabled (that is what crashed the live sitemap).
+        $xml = new \XMLWriter;
+        $xml->openMemory();
+        $xml->startDocument('1.0', 'UTF-8');
+        $xml->startElement('urlset');
+        $xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        foreach ($urls as $url) {
+            $xml->startElement('url');
+            $xml->writeElement('loc', $url['loc']);
+            if (! empty($url['lastmod'])) {
+                $xml->writeElement('lastmod', $url['lastmod']);
+            }
+            $xml->writeElement('changefreq', $url['changefreq'] ?? 'weekly');
+            $xml->writeElement('priority', $url['priority'] ?? '0.5');
+            $xml->endElement();
+        }
+        $xml->endElement();
+        $xml->endDocument();
+
+        return response($xml->outputMemory(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
 
     /**
