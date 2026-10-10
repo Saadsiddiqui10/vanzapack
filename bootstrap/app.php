@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsurePermission;
 use App\Http\Middleware\EnsureUserIsStaff;
+use App\Http\Middleware\RedirectWwwToApex;
 use App\Http\Middleware\ShareStorefrontData;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->prepend(RedirectWwwToApex::class);
+
         $middleware->alias([
             'staff' => EnsureUserIsStaff::class,
             'permission' => EnsurePermission::class,
