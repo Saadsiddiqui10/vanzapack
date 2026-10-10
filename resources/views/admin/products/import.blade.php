@@ -79,7 +79,6 @@
                         'sku' => 'Unique product code (required)',
                         'name' => 'Product name (required for new products)',
                         'category' => 'Category name (must already exist) or ID',
-                        'brand' => 'Brand name (created if missing) or ID',
                         'price' => 'Regular price, e.g. 35.00',
                         'sale_price' => 'Optional discounted price (leave empty to remove)',
                         'cost_price' => 'Optional cost',

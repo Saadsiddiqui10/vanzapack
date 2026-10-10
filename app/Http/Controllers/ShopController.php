@@ -98,7 +98,6 @@ class ShopController extends Controller
             'filterCategories' => Category::active()->roots()
                 ->with(['children' => fn ($q) => $q->active()->withCount(['products' => fn ($p) => $p->active()])])
                 ->orderBy('position')->get(),
-            'filterBrands' => Brand::active()->orderBy('name')->get(),
             'filterAttributes' => Attribute::where('is_variation', true)->with('values')->orderBy('position')->get(),
             'sorts' => ProductQuery::SORTS,
             'priceBounds' => [

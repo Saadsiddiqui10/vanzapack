@@ -6,7 +6,6 @@
         ['heading' => 'Catalog'],
         ['label' => 'Products', 'route' => 'admin.products.index', 'key' => 'products', 'perm' => 'products.view'],
         ['label' => 'Categories', 'route' => 'admin.categories.index', 'key' => 'categories', 'perm' => 'categories.view'],
-        ['label' => 'Brands', 'route' => 'admin.brands.index', 'key' => 'brands', 'perm' => 'brands.view'],
         ['label' => 'Attributes', 'route' => 'admin.attributes.index', 'key' => 'attributes', 'perm' => 'attributes.view'],
         ['label' => 'Inventory', 'route' => 'admin.inventory.index', 'key' => 'inventory', 'perm' => 'inventory.view'],
         ['label' => 'Reviews', 'route' => 'admin.reviews.index', 'key' => 'reviews', 'perm' => 'reviews.view'],

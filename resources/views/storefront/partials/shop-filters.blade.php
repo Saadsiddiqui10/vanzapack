@@ -38,22 +38,6 @@
         </div>
     </div>
 
-    <div>
-        <h3 class="mb-2 font-semibold text-brand-800">Brand</h3>
-        <ul class="max-h-48 space-y-1 overflow-y-auto pr-1">
-            @foreach($filterBrands as $brand)
-                <li>
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox" name="brands[]" value="{{ $brand->slug }}"
-                               @checked(in_array($brand->slug, (array) request('brands', [])))
-                               class="rounded border-slate-300 text-brand-500 focus:ring-brand-500">
-                        <span>{{ $brand->name }}</span>
-                    </label>
-                </li>
-            @endforeach
-        </ul>
-    </div>
-
     @foreach($filterAttributes as $attribute)
         <div>
             <h3 class="mb-2 font-semibold text-brand-800">{{ $attribute->name }}</h3>

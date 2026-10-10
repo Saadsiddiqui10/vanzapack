@@ -40,7 +40,7 @@
             <div class="relative hidden flex-1 md:block" x-data="searchBox" @click.outside="open = false">
                 <form action="{{ route('search') }}" method="GET" class="flex">
                     <input name="q" x-model="q" @input="onInput" @focus="q.length >= 2 && (open = true)"
-                           autocomplete="off" placeholder="Search for products, brands, categories…"
+                           autocomplete="off" placeholder="Search for products or categories…"
                            class="field rounded-r-none border-r-0" aria-label="Search products">
                     <button class="btn-primary rounded-l-none px-4" aria-label="Search">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>

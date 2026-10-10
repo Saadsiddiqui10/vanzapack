@@ -25,12 +25,6 @@
                             @foreach($categories as $c)<option value="{{ $c->id }}" @selected(old('category_id', $product->category_id) == $c->id)>{{ $c->name }}</option>@endforeach
                         </select>
                     </x-admin.field>
-                    <x-admin.field label="Brand" name="brand_id">
-                        <select name="brand_id" class="field">
-                            <option value="">— None —</option>
-                            @foreach($brands as $b)<option value="{{ $b->id }}" @selected(old('brand_id', $product->brand_id) == $b->id)>{{ $b->name }}</option>@endforeach
-                        </select>
-                    </x-admin.field>
                     <x-admin.field label="Short description" name="short_description" class="sm:col-span-2">
                         <textarea name="short_description" rows="2" class="field">{{ old('short_description', $product->short_description) }}</textarea>
                     </x-admin.field>

@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 class ProductImportController extends Controller
 {
     private const COLUMNS = [
-        'sku', 'name', 'category', 'brand', 'price', 'sale_price', 'cost_price',
+        'sku', 'name', 'category', 'price', 'sale_price', 'cost_price',
         'stock', 'low_stock_threshold', 'status', 'short_description', 'description',
         'weight', 'barcode', 'is_featured', 'is_new_arrival', 'is_best_seller', 'tags', 'images',
     ];
@@ -33,7 +33,7 @@ class ProductImportController extends Controller
     public function template()
     {
         $sample = [
-            'VP-EXAMPLE-1', 'Kraft Takeaway Box Medium', 'Kraft Boxes & Containers', 'KraftWorks',
+            'VP-EXAMPLE-1', 'Kraft Takeaway Box Medium', 'Kraft Boxes & Containers',
             '35.00', '29.00', '18.00', '120', '15', 'active',
             'Grease-resistant kraft box for hot food.', '<p>Full HTML description here.</p>',
             '0.25', '1234567890123', '1', '1', '0', 'eco,takeaway,wholesale',
