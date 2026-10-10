@@ -129,7 +129,7 @@
                         <button type="button" class="px-3 py-2 text-slate-500" @click="qty++">+</button>
                     </div>
 
-                    <button class="btn-primary flex-1 sm:flex-none sm:px-8"
+                    <button class="btn-primary flex-1 whitespace-nowrap sm:flex-none sm:px-8"
                             :disabled="!inStock || ({{ $product->has_variants ? 'true' : 'false' }} && !variantId)"
                             @click="
                                 $store.cart.loading = true;
@@ -145,7 +145,8 @@
                         Add to Cart
                     </button>
 
-                    <a href="{{ route('checkout.index') }}" class="btn-navy" x-show="inStock">Buy Now</a>
+                    {{-- full-width second row on phones so neither button gets squeezed --}}
+                    <a href="{{ route('checkout.index') }}" class="btn-navy w-full whitespace-nowrap sm:w-auto" x-show="inStock">Buy Now</a>
                 </div>
 
                 <div class="mt-3 flex flex-wrap gap-3 text-sm">
@@ -174,11 +175,12 @@
 
         {{-- Tabs --}}
         <div class="mt-12" x-data="{ tab: 'description' }">
-            <div class="flex gap-6 border-b border-slate-200 text-sm font-medium">
+            {{-- tabs scroll sideways on phones instead of wrapping --}}
+            <div class="-mx-4 flex gap-6 overflow-x-auto border-b border-slate-200 px-4 text-sm font-medium [scrollbar-width:none] sm:mx-0 sm:px-0">
                 @foreach(['description' => 'Description', 'specifications' => 'Specifications', 'shipping' => 'Shipping & Returns', 'reviews' => 'Reviews ('.$product->rating_count.')'] as $key => $label)
                     <button @click="tab = '{{ $key }}'"
                             :class="tab === '{{ $key }}' ? 'border-brand-500 text-brand-800' : 'border-transparent text-slate-400'"
-                            class="-mb-px border-b-2 pb-3">{{ $label }}</button>
+                            class="-mb-px shrink-0 whitespace-nowrap border-b-2 pb-3">{{ $label }}</button>
                 @endforeach
             </div>
 

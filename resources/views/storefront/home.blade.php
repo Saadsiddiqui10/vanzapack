@@ -2,9 +2,11 @@
     {{-- ── Hero (full-width slider) ─────────────────────────── --}}
     {{-- Banners are finished designs (text baked in), so each slide shows the whole image at its
          exact 1983×793 proportions — nothing cropped, nothing laid over it. The whole slide is a link. --}}
+    {{-- Phones get the taller 6:5 mobile designs when every slide has one --}}
+    @php($hasMobileBanners = $heroBanners->isNotEmpty() && $heroBanners->every(fn ($b) => filled($b->mobile_image)))
     <section x-data="{ i: 0, count: {{ max(1, $heroBanners->count()) }} }"
              x-init="count > 1 && setInterval(() => i = (i + 1) % count, 6000)"
-             class="relative w-full overflow-hidden bg-slate-100 aspect-[1983/793]">
+             class="relative w-full overflow-hidden bg-slate-100 {{ $hasMobileBanners ? 'aspect-[6/5] sm:aspect-[1983/793]' : 'aspect-[1983/793]' }}">
 
         @forelse($heroBanners as $index => $banner)
             <a href="{{ $banner->cta_url ?: route('shop.index') }}"
@@ -17,7 +19,7 @@
                class="absolute inset-0 block" aria-label="{{ $banner->title }}">
                 <picture>
                     @if($banner->mobile_image)
-                        <source media="(max-width: 640px)" srcset="{{ media($banner->mobile_image) }}">
+                        <source media="(max-width: 639px)" srcset="{{ media($banner->mobile_image) }}">
                     @endif
                     <img src="{{ $banner->imageUrl() }}" alt="{{ $banner->title }}" width="1983" height="793"
                          class="h-full w-full object-cover" @if($index > 0) loading="lazy" @else fetchpriority="high" @endif>
@@ -52,18 +54,19 @@
     </section>
 
     {{-- ── Value props ──────────────────────────────────────── --}}
-    <section class="container-page grid grid-cols-2 gap-4 py-6 lg:grid-cols-4">
+    {{-- Compact on phones: icon above the text so titles don't wrap onto 3–4 lines --}}
+    <section class="container-page grid grid-cols-2 gap-3 py-5 sm:gap-4 sm:py-6 lg:grid-cols-4">
         @foreach([
             ['🚚', 'Fast UAE Delivery', 'On-time across all Emirates'],
             ['🔒', 'Secure Payments', 'COD & bank transfer'],
             ['↩️', 'Easy Returns', '7-day return window'],
             ['💬', 'Business Support', 'Help choosing the right products'],
         ] as [$icon, $title, $sub])
-            <div class="card flex items-center gap-3 p-4">
-                <span class="text-2xl">{{ $icon }}</span>
-                <div>
-                    <p class="text-sm font-semibold text-brand-800">{{ $title }}</p>
-                    <p class="text-xs text-slate-400">{{ $sub }}</p>
+            <div class="card flex flex-col gap-1 p-3 sm:flex-row sm:items-center sm:gap-3 sm:p-4">
+                <span class="text-xl sm:text-2xl">{{ $icon }}</span>
+                <div class="min-w-0">
+                    <p class="text-[13px] font-semibold leading-tight text-brand-800 sm:text-sm">{{ $title }}</p>
+                    <p class="mt-0.5 text-[11px] leading-snug text-slate-400 sm:text-xs">{{ $sub }}</p>
                 </div>
             </div>
         @endforeach

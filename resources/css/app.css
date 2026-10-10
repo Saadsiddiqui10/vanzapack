@@ -84,6 +84,18 @@
 
 [x-cloak] { display: none !important; }
 
+/* ── Admin on phones: tables keep a readable width and scroll sideways
+      instead of squeezing every column (names breaking word by word, columns cut off) ── */
+@media (max-width: 767px) {
+    .admin-body main div:has(> table) { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .admin-body main table { min-width: 680px; }
+    .admin-body main th { white-space: nowrap; }
+    /* one line per cell (browsers ignore min-width on table cells, so names were
+       breaking word by word); the table scrolls sideways instead */
+    .admin-body main td { vertical-align: middle; white-space: nowrap; }
+    .admin-body .btn-primary, .admin-body .btn-outline, .admin-body .btn-navy { white-space: nowrap; }
+}
+
 /* ── Floating WhatsApp button ── */
 .wa-float {
     cursor: pointer;

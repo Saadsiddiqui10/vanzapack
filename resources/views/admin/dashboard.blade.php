@@ -1,5 +1,5 @@
 <x-admin-layout title="Dashboard" active="dashboard">
-    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         @foreach([
             ['Total revenue', money($totalRevenue), 'brand'],
             ["Today's revenue", money($todayRevenue), 'navy'],
@@ -10,9 +10,9 @@
             ['Low stock', $lowStockCount, 'amber'],
             ['Out of stock', $outOfStockCount, 'rose'],
         ] as [$label, $value, $tone])
-            <div class="rounded-xl border border-slate-200 bg-white p-4">
-                <p class="text-xs uppercase tracking-wide text-slate-400">{{ $label }}</p>
-                <p class="mt-1 text-2xl font-bold text-{{ $tone === 'brand' ? 'brand-600' : ($tone === 'amber' ? 'amber-600' : ($tone === 'rose' ? 'rose-600' : 'brand-800')) }}">{{ $value }}</p>
+            <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 sm:p-4">
+                <p class="truncate text-[11px] uppercase tracking-wide text-slate-400 sm:text-xs">{{ $label }}</p>
+                <p class="mt-1 truncate text-lg font-bold sm:text-2xl text-{{ $tone === 'brand' ? 'brand-600' : ($tone === 'amber' ? 'amber-600' : ($tone === 'rose' ? 'rose-600' : 'brand-800')) }}">{{ $value }}</p>
             </div>
         @endforeach
     </div>

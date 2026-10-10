@@ -43,7 +43,7 @@
     @include('partials.favicons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full bg-slate-100 text-slate-700" x-data="{ sidebar: false }">
+<body class="admin-body h-full bg-slate-100 text-slate-700" x-data="{ sidebar: false }">
 <div class="flex min-h-full">
     {{-- Sidebar --}}
     <aside :class="sidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"

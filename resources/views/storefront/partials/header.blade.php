@@ -27,13 +27,13 @@
     @endif
 
     <div class="border-b border-slate-100">
-        <div class="container-page flex items-center gap-4 py-3">
-            <button class="lg:hidden" @click="mobileOpen = true" aria-label="Open menu">
+        <div class="container-page flex items-center gap-2 py-3 sm:gap-4">
+            <button class="-ml-1 p-1 lg:hidden" @click="mobileOpen = true" aria-label="Open menu">
                 <svg class="h-6 w-6 text-brand-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
 
-            <a href="{{ route('home') }}" class="flex shrink-0 items-center">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ settings('store_name', 'VanzaPack') }}" class="h-10 w-auto sm:h-12" width="1476" height="352">
+            <a href="{{ route('home') }}" class="flex min-w-0 shrink items-center">
+                <img src="{{ asset('images/logo.png') }}" alt="{{ settings('store_name', 'VanzaPack') }}" class="h-8 w-auto max-w-full sm:h-12" width="1476" height="352">
             </a>
 
             {{-- Search --}}
@@ -74,13 +74,14 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center gap-1 sm:gap-3">
+            {{-- ml-auto pushes the icons to the right edge on phones (the search box is hidden there) --}}
+            <div class="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-3">
                 @auth
-                    <a href="{{ route('account.dashboard') }}" class="btn-ghost hidden px-2 sm:inline-flex" title="My account">
+                    <a href="{{ route('account.dashboard') }}" class="btn-ghost px-2" title="My account" aria-label="My account">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="btn-ghost hidden px-2 sm:inline-flex" title="Sign in">
+                    <a href="{{ route('login') }}" class="btn-ghost px-2" title="Sign in" aria-label="Sign in">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
                     </a>
                 @endauth

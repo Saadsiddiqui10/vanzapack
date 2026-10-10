@@ -181,7 +181,7 @@
             class="wa-float fixed bottom-3 left-3 z-40 block sm:bottom-4 sm:left-4"
             aria-label="Click for WhatsApp Chat" title="Chat with us on WhatsApp">
         <img src="{{ asset('images/whatsapp-button.png') }}" alt="Click for WhatsApp Chat"
-             width="640" height="146" class="h-12 w-auto sm:h-14" draggable="false">
+             width="640" height="146" class="h-10 w-auto sm:h-14" draggable="false">
     </button>
 
     <button x-data="backToTop" x-show="show" x-cloak @click="up()"

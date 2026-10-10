@@ -16,8 +16,9 @@
             </form>
         </div>
 
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
-            <div class="lg:col-span-2">
+        {{-- phones: brand block full width, link lists two per row --}}
+        <div class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-5">
+            <div class="col-span-2">
                 <span class="inline-block rounded-lg bg-white px-3 py-2">
                     <img src="{{ asset('images/logo.png') }}" alt="VanzaPack" class="h-10 w-auto" loading="lazy">
                 </span>
