@@ -6,9 +6,6 @@
                 <p class="mt-2 text-slate-600">{{ $page?->content ? strip_tags($page->content) : 'Reach the VanzaPack team Monday to Saturday, 9:00AM – 6:00PM.' }}</p>
 
                 <dl class="mt-6 space-y-3 text-sm">
-                    @php($phone = settings('store_phone', config('store.phone')))
-                    <div><dt class="font-semibold text-brand-800">Phone</dt><dd><a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="text-slate-600 hover:text-brand-600">{{ $phone }}</a></dd></div>
-                    <div><dt class="font-semibold text-brand-800">WhatsApp</dt><dd><button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->supportLink() }}" class="text-slate-600 hover:text-brand-600">+{{ settings('whatsapp_country_code', '971') }} {{ settings('whatsapp_phone') }}</button></dd></div>
                     @foreach(['store_email' => 'General enquiries', 'store_sales_email' => 'Sales & quotes', 'store_support_email' => 'Customer support'] as $key => $label)
                         @if($email = settings($key, config('store.'.str_replace('store_', '', $key))))
                             <div><dt class="font-semibold text-brand-800">{{ $label }}</dt><dd><a href="mailto:{{ $email }}" class="text-slate-600 hover:text-brand-600">{{ $email }}</a></dd></div>
@@ -23,9 +20,6 @@
                     <div><dt class="font-semibold text-brand-800">Office</dt><dd class="text-slate-600">{{ settings('store_address', config('store.address')) }}</dd></div>
                     <div><dt class="font-semibold text-brand-800">Hours</dt><dd class="text-slate-600">{{ settings('business_hours', config('store.business_hours')) }}</dd></div>
                 </dl>
-
-                <button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->supportLink() }}"
-                   class="btn mt-6 bg-[#25D366] text-white hover:opacity-90">Chat on WhatsApp</button>
             </div>
 
             <form method="POST" action="{{ route('contact.store') }}" class="card space-y-4 p-6">

@@ -1,34 +1,32 @@
 <x-storefront-layout>
     {{-- ── Hero (full-width slider) ─────────────────────────── --}}
+    {{-- Banners are finished designs (text baked in), so each slide shows the whole image at its
+         exact 1983×793 proportions — nothing cropped, nothing laid over it. The whole slide is a link. --}}
     <section x-data="{ i: 0, count: {{ max(1, $heroBanners->count()) }} }"
              x-init="count > 1 && setInterval(() => i = (i + 1) % count, 6000)"
-             class="relative w-full overflow-hidden bg-gradient-to-br from-brand-50 to-brand-100
-                    h-[62vw] max-h-[560px] min-h-[340px] sm:h-[46vw] lg:h-[38vw]">
+             class="relative w-full overflow-hidden bg-slate-100 aspect-[1983/793]">
 
         @forelse($heroBanners as $index => $banner)
-            <div x-show="i === {{ $index }}"
-                 x-transition:enter="transition ease-out duration-700"
-                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                 x-transition:leave="transition ease-in duration-500 absolute"
-                 x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                 class="absolute inset-0">
-                {{-- full-bleed background image --}}
-                <img src="{{ $banner->imageUrl() }}" alt="{{ $banner->title }}"
-                     class="absolute inset-0 h-full w-full object-cover">
-                {{-- readability wash on the text side --}}
-                <div class="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/10 md:to-transparent"></div>
-
-                <div class="container-page relative flex h-full flex-col justify-center">
-                    <div class="max-w-xl">
-                        <h1 class="font-display text-2xl font-extrabold leading-tight text-brand-800 sm:text-3xl lg:text-5xl">{{ $banner->title }}</h1>
-                        <p class="mt-3 max-w-md text-sm text-slate-600 sm:text-base">{{ $banner->subtitle }}</p>
-                        <div class="mt-5 flex flex-wrap gap-3 sm:mt-7">
-                            <a href="{{ $banner->cta_url ?: route('shop.index') }}" class="btn-primary">{{ $banner->cta_label ?: 'Shop Now' }}</a>
-                            <a href="{{ route('shop.new') }}" class="btn-outline">Explore Collection</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a href="{{ $banner->cta_url ?: route('shop.index') }}"
+               x-show="i === {{ $index }}"
+               x-transition:enter="transition ease-out duration-700"
+               x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+               x-transition:leave="transition ease-in duration-500 absolute"
+               x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+               @if($index > 0) x-cloak @endif
+               class="absolute inset-0 block" aria-label="{{ $banner->title }}">
+                <picture>
+                    @if($banner->mobile_image)
+                        <source media="(max-width: 640px)" srcset="{{ media($banner->mobile_image) }}">
+                    @endif
+                    <img src="{{ $banner->imageUrl() }}" alt="{{ $banner->title }}" width="1983" height="793"
+                         class="h-full w-full object-cover" @if($index > 0) loading="lazy" @else fetchpriority="high" @endif>
+                </picture>
+                {{-- keep the headline for search engines / screen readers --}}
+                @if($index === 0)
+                    <h1 class="sr-only">{{ $banner->title }}</h1>
+                @endif
+            </a>
         @empty
             <div class="absolute inset-0">
                 <img src="https://placehold.co/1600x700/e6f2cf/000066?text=VanzaPack" alt="" class="absolute inset-0 h-full w-full object-cover">
@@ -44,10 +42,10 @@
         @endforelse
 
         @if($heroBanners->count() > 1)
-            <div class="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+            <div class="absolute bottom-1.5 left-1/2 z-10 flex -translate-x-1/2 gap-2 rounded-full bg-black/20 px-2 py-1 backdrop-blur-sm sm:bottom-2">
                 @foreach($heroBanners as $index => $b)
-                    <button @click="i = {{ $index }}" :class="i === {{ $index }} ? 'bg-brand-700 w-6' : 'bg-white/70'"
-                            class="h-2 w-2 rounded-full shadow transition-all" aria-label="Slide {{ $index + 1 }}"></button>
+                    <button type="button" @click="i = {{ $index }}" :class="i === {{ $index }} ? 'bg-accent w-5' : 'bg-white/80 w-1.5'"
+                            class="h-1.5 rounded-full transition-all" aria-label="Slide {{ $index + 1 }}"></button>
                 @endforeach
             </div>
         @endif
