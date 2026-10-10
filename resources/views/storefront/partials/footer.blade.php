@@ -25,7 +25,6 @@
                     Your trusted source for food packaging, cleaning products and everyday business supplies across the UAE.
                 </p>
                 <div class="mt-4 space-y-1 text-sm text-slate-300">
-                    <p>💬 WhatsApp: <button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->supportLink() }}" class="hover:text-white">+{{ settings('whatsapp_country_code', '971') }} {{ settings('whatsapp_phone') }}</button></p>
                     @foreach(['store_email' => 'Info', 'store_sales_email' => 'Sales', 'store_support_email' => 'Support'] as $key => $label)
                         @if($email = settings($key, config('store.'.str_replace('store_', '', $key))))
                             <p>✉️ {{ $label }}: <a href="mailto:{{ $email }}" class="hover:text-white">{{ $email }}</a></p>
