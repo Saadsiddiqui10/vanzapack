@@ -130,8 +130,8 @@
         <section class="bg-brand-700 py-10">
             <div class="container-page">
                 <div class="mb-6 flex items-center justify-between text-white">
-                    <x-section-heading title="🔥 Mega Deals" first="text-brand-300" rest="text-white" />
-                    <a href="{{ route('shop.offers') }}" class="text-sm text-brand-300 hover:text-brand-200">View all →</a>
+                    <x-section-heading title="🔥 Mega Deals" first="text-accent" rest="text-white" />
+                    <a href="{{ route('shop.offers') }}" class="text-sm font-medium text-accent hover:text-white">View all →</a>
                 </div>
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                     @foreach($dealProducts->take(5) as $product)

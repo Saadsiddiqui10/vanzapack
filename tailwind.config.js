@@ -29,11 +29,17 @@ export default {
                     200: '#d0e7a6',
                     300: '#b8d977',
                     400: '#a4cf52',
-                    500: '#95c93f', // primary
-                    600: '#7aa82f',
-                    700: '#5e8226',
-                    800: '#4b6622',
-                    900: '#3f5620',
+                    500: '#95c93f', // primary (lime CTA buttons)
+                    // Dark shades = the logo's forest green (sections, badges, hovers)
+                    600: '#0b5a3e',
+                    700: '#063d2a', // logo green
+                    800: '#04301f',
+                    900: '#03221a',
+                },
+                // The logo's yellow ("pack")
+                accent: {
+                    DEFAULT: '#f4b008',
+                    600: '#d99a00',
                 },
                 navy: {
                     50: '#e8e8f3',
