@@ -6,6 +6,7 @@ use App\Mail\ContactAutoReply;
 use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
 use App\Models\Page;
+use App\Support\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -41,8 +42,7 @@ class ContactController extends Controller
         // The message is already saved in Admin → Messages, so a mail problem
         // (e.g. SMTP not configured) must never show the visitor an error.
         try {
-            $inbox = settings('store_email', config('store.email'));
-            if ($inbox) {
+            if ($inbox = Notify::inbox()) {
                 Mail::to($inbox)->send(new ContactMessageReceived($contact));
             }
             Mail::to($contact->email, $contact->name)->send(new ContactAutoReply($contact));

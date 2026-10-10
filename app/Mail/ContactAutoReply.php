@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\ContactMessage;
+use App\Support\Notify;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -19,10 +20,11 @@ class ContactAutoReply extends Mailable
 
     public function envelope(): Envelope
     {
-        $support = settings('store_support_email', config('store.support_email'));
+        // If the customer replies to the confirmation, it lands in the store inbox.
+        $inbox = Notify::inbox();
 
         return new Envelope(
-            replyTo: $support ? [new Address($support, settings('store_name', 'VanzaPack'))] : [],
+            replyTo: $inbox ? [new Address($inbox, settings('store_name', 'VanzaPack'))] : [],
             subject: 'We received your message — '.settings('store_name', 'VanzaPack'),
         );
     }

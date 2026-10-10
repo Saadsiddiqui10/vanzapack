@@ -18,6 +18,7 @@ class SettingSeeder extends Seeder
             ['store_email', 'info@vanzapack.com', 'general', 'string'],
             ['store_sales_email', 'sales@vanzapack.com', 'general', 'string'],
             ['store_support_email', 'support@vanzapack.com', 'general', 'string'],
+            ['notification_email', 'sales@vanzapack.com', 'general', 'string'],
             ['store_phone', '+971 4 262 7225', 'general', 'string'],
             ['store_landline', '+971 4 262 7225', 'general', 'string'],
             ['store_address', 'Down Town Jebel Ali St 19, JAFZA View, 1st Floor Tower 18, Dubai, United Arab Emirates', 'general', 'string'],

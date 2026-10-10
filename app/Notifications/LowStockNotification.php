@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Inventory;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -13,9 +14,10 @@ class LowStockNotification extends Notification
 
     public function __construct(public Inventory $inventory) {}
 
+    /** Staff users see it in the admin panel; the email goes once to the store inbox (see Notify::staff). */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return $notifiable instanceof AnonymousNotifiable ? ['mail'] : ['database'];
     }
 
     public function toMail(object $notifiable): MailMessage

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewsletterSubscribed;
 use App\Mail\NewsletterWelcome;
 use App\Models\NewsletterSubscriber;
+use App\Support\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -28,10 +30,14 @@ class NewsletterController extends Controller
             ['is_confirmed' => true, 'unsubscribed_at' => null],
         );
 
-        // Welcome email only for new sign-ups; a mail problem must not break the form.
+        // New sign-ups only: welcome the subscriber and alert the store inbox.
+        // A mail problem must never break the form.
         if ($subscriber->wasRecentlyCreated) {
             try {
                 Mail::to($subscriber->email)->send(new NewsletterWelcome);
+                if ($inbox = Notify::inbox()) {
+                    Mail::to($inbox)->send(new NewsletterSubscribed($subscriber));
+                }
             } catch (Throwable $e) {
                 report($e);
             }
