@@ -4,7 +4,7 @@
         : collect(array_filter([settings('announcement_text')]))->map(fn ($t) => (object) ['text' => $t, 'url' => null]);
 @endphp
 
-<header x-data="{ mobileOpen: false }" class="sticky top-0 z-40 bg-white shadow-sm">
+<header x-data="{ mobileOpen: false }" x-effect="document.body.classList.toggle('menu-open', mobileOpen)" class="sticky top-0 z-40 bg-white shadow-sm">
     @if($announcementList->isNotEmpty())
         <div class="bg-navy-600 text-white">
             <div class="marquee py-1.5 text-xs font-medium sm:text-sm" style="--marquee-duration: {{ max(18, $announcementList->count() * 12) }}s; --marquee-gap: 4rem;">

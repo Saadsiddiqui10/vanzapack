@@ -129,8 +129,50 @@
     92% { transform: rotate(-2deg) scale(1.03); }
     94% { transform: rotate(1deg); }
 }
+.wa-float__icon { display: none; }
+
+/* Hidden while the mobile menu or the cart drawer is open, so it never covers them */
+.wa-float { transition-property: transform, filter, opacity, visibility; }
+.menu-open .wa-float,
+.cart-open .wa-float { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Phones: round icon that slides open to "Click for WhatsApp Chat" every few seconds,
+   lifting and glowing like the desktop hover, then tucks back into a circle. */
+@media (max-width: 639px) {
+    .wa-float {
+        --wa-h: 3rem;
+        height: var(--wa-h);
+        width: var(--wa-h);
+        overflow: hidden;
+        animation: wa-enter .6s cubic-bezier(.34, 1.56, .64, 1) .4s backwards,
+                   wa-peek 11s ease-in-out 3s infinite;
+    }
+    .wa-float img { height: var(--wa-h); width: auto; max-width: none; animation: none; }
+    .wa-float__icon {
+        position: absolute; inset: 0 auto 0 0; z-index: 1;
+        display: grid; place-items: center;
+        width: var(--wa-h); height: var(--wa-h); border-radius: 9999px;
+        background: linear-gradient(145deg, #2fd46c, #12a150); color: #fff;
+        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .9);
+        animation: wa-icon 11s ease-in-out 3s infinite;
+    }
+    .wa-float__icon svg { width: 60%; height: 60%; }
+    /* a tap shows the full button straight away */
+    .wa-float:active { width: calc(var(--wa-h) * 640 / 146); }
+}
+@keyframes wa-peek {
+    0%, 52%, 100% { width: var(--wa-h); transform: none; filter: drop-shadow(0 6px 14px rgba(15, 80, 40, .25)); }
+    58%, 88%      { width: calc(var(--wa-h) * 640 / 146); transform: translateY(-4px) scale(1.04);
+                    filter: drop-shadow(0 10px 22px rgba(37, 211, 102, .5)); }
+    94%           { width: var(--wa-h); transform: none; }
+}
+@keyframes wa-icon {
+    0%, 52%, 100% { opacity: 1; }
+    57%, 89%      { opacity: 0; }
+    94%           { opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
-    .wa-float, .wa-float img { animation: none; transition: none; }
+    .wa-float, .wa-float img, .wa-float__icon { animation: none; transition: none; }
 }
 
 /* ── Marquee (announcement bar, brand + category strips) ── */
