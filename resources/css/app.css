@@ -178,22 +178,30 @@
 /* ── Marquee (announcement bar, brand + category strips) ── */
 .marquee {
     display: flex;
-    gap: var(--marquee-gap, 3rem); /* same spacing between the two looping tracks as between items */
     overflow: hidden;
     user-select: none;
 }
+/* Each track carries the gap as right padding, so scrolling it by exactly its own width
+   (-100%) loops seamlessly. No CSS variables inside @keyframes: iOS Safari can ignore
+   those, which left the bar frozen on iPhones. */
 .marquee__track {
     display: flex;
     flex-shrink: 0;
     align-items: center;
     gap: var(--marquee-gap, 3rem);
+    padding-right: var(--marquee-gap, 3rem);
     min-width: 100%;
     animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+    will-change: transform;
 }
-.marquee:hover .marquee__track { animation-play-state: paused; }
+/* Pause on hover only where there is a real mouse — on phones a tap leaves a "sticky"
+   hover that would freeze the bar. */
+@media (hover: hover) and (pointer: fine) {
+    .marquee:hover .marquee__track { animation-play-state: paused; }
+}
 @keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(-100% - var(--marquee-gap, 3rem))); }
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-100%, 0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
     .marquee__track { animation: none; }
