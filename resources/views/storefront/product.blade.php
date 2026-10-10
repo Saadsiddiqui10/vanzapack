@@ -138,7 +138,7 @@
                                     headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content,'X-Requested-With':'XMLHttpRequest','Accept':'application/json'},
                                     body: JSON.stringify({ product_id: {{ $product->id }}, variant_id: variantId, quantity: qty })
                                 }).then(r => r.json()).then(d => {
-                                    window.gcToast(d.message, d.ok ? 'success' : 'error');
+                                    window.vpToast(d.message, d.ok ? 'success' : 'error');
                                     if (d.ok) { $store.cart.setCount(d.cart_count); $store.cart.openDrawer(); }
                                 });
                             ">
@@ -157,10 +157,10 @@
                     </button>
 
                     @if($wa->enabledForProduct())
-                        <a href="{{ $wa->productLink($product) }}" target="_blank" rel="noopener"
+                        <button type="button" data-wa-href="{{ $wa->productLink($product) }}"
                            class="inline-flex items-center gap-1.5 text-[#128C7E] hover:underline">
                             💬 Order / Enquire on WhatsApp
-                        </a>
+                        </button>
                     @endif
                 </div>
 

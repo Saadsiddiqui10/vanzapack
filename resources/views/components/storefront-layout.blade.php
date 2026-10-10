@@ -155,7 +155,7 @@
     </div>
 
     {{-- Toasts --}}
-    <div x-data="toastHub" @gc-toast.window="add($event.detail)"
+    <div x-data="toastHub" @vp-toast.window="add($event.detail)"
          class="fixed bottom-4 right-4 z-[60] flex w-80 flex-col gap-2" x-cloak>
         <template x-for="toast in toasts" :key="toast.id">
             <div class="animate-fade-in-up rounded-lg px-4 py-3 text-sm text-white shadow-lg"
@@ -167,16 +167,17 @@
 
     {{-- Session flash → toast --}}
     @if(session('success') || session('error'))
-        <div x-data x-init="window.gcToast(@js(session('success') ?? session('error')), '{{ session('success') ? 'success' : 'error' }}')"></div>
+        <div x-data x-init="window.vpToast(@js(session('success') ?? session('error')), '{{ session('success') ? 'success' : 'error' }}')"></div>
     @endif
 
     {{-- WhatsApp float + back to top --}}
-    <a href="{{ app(\App\Services\WhatsAppService::class)->supportLink() }}" target="_blank" rel="noopener"
-       class="fixed bottom-3 left-3 z-40 block transition hover:scale-105 sm:bottom-4 sm:left-4"
-       aria-label="Click for WhatsApp Chat">
+    {{-- A button (not a link) so the browser doesn't show the wa.me URL on hover --}}
+    <button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->supportLink() }}"
+            class="wa-float fixed bottom-3 left-3 z-40 block sm:bottom-4 sm:left-4"
+            aria-label="Click for WhatsApp Chat" title="Chat with us on WhatsApp">
         <img src="{{ asset('images/whatsapp-button.png') }}" alt="Click for WhatsApp Chat"
-             width="640" height="146" class="h-12 w-auto drop-shadow-lg sm:h-14">
-    </a>
+             width="640" height="146" class="h-12 w-auto sm:h-14" draggable="false">
+    </button>
 
     <button x-data="backToTop" x-show="show" x-cloak @click="up()"
             class="fixed bottom-4 right-4 z-40 hidden h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-white shadow-lg sm:flex"

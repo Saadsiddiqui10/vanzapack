@@ -15,7 +15,7 @@ use ZipArchive;
  *
  * Sources are image URLs or file names inside an uploaded ZIP. ZIP files can
  * also be matched to products automatically when they are named after the
- * product's SKU or name, e.g. "GC-10001.jpg", "GC-10001-2.jpg", "Kraft Paper Cups.png".
+ * product's SKU or name, e.g. "VP-10001.jpg", "VP-10001-2.jpg", "Kraft Paper Cups.png".
  */
 class ProductImageImporter
 {
@@ -65,7 +65,7 @@ class ProductImageImporter
             $this->addKey($stem, 0, $i);
             $this->addKey(Str::slug($stem), 0, $i);
 
-            // "GC-10001-2", "GC-10001_3", "Kraft Cups (2)" => extra photos of the same product.
+            // "VP-10001-2", "VP-10001_3", "Kraft Cups (2)" => extra photos of the same product.
             if (preg_match('/^(.*?)(?:[-_ ]+|\s*\()(\d{1,2})\)?$/', $stem, $m) && $m[1] !== '') {
                 $this->addKey($m[1], (int) $m[2], $i);
                 $this->addKey(Str::slug($m[1]), (int) $m[2], $i);

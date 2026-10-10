@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'brand_id' => Brand::factory(),
             'name' => $name,
             'slug' => Str::slug($name).'-'.Str::lower(Str::random(5)),
-            'sku' => 'GC-'.strtoupper(Str::random(8)),
+            'sku' => 'VP-'.strtoupper(Str::random(8)),
             'short_description' => fake()->sentence(14),
             'description' => fake()->paragraphs(3, true),
             'specifications' => fake()->paragraph(),

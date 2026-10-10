@@ -208,7 +208,7 @@ class CatalogSeeder extends Seeder
                 'category_id' => $category->id,
                 'brand_id' => $brand?->id,
                 'name' => $name,
-                'sku' => 'GC-'.(++$skuSeq),
+                'sku' => 'VP-'.(++$skuSeq),
                 'barcode' => (string) fake()->ean13(),
                 'short_description' => $short,
                 'description' => "<p>{$short}</p><p>".fake()->paragraph(4).'</p><p>'.fake()->paragraph(3).'</p>',

@@ -84,6 +84,43 @@
 
 [x-cloak] { display: none !important; }
 
+/* ── Floating WhatsApp button ── */
+.wa-float {
+    cursor: pointer;
+    border-radius: 9999px;
+    filter: drop-shadow(0 6px 14px rgba(15, 80, 40, .25));
+    transform-origin: left center;
+    transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), filter .25s ease;
+    /* "backwards": hidden until it starts, but releases transform afterwards so :hover can scale it */
+    animation: wa-enter .6s cubic-bezier(.34, 1.56, .64, 1) .4s backwards;
+}
+/* The wiggle runs on the image so it never fights the button's hover transform */
+.wa-float img { transform-origin: left center; animation: wa-nudge 7s ease-in-out 4s infinite; }
+.wa-float:hover img,
+.wa-float:focus-visible img { animation-play-state: paused; }
+.wa-float:hover,
+.wa-float:focus-visible {
+    transform: translateY(-4px) scale(1.06);
+    filter: drop-shadow(0 10px 22px rgba(37, 211, 102, .45));
+}
+.wa-float:active { transform: translateY(-1px) scale(.97); transition-duration: .08s; }
+.wa-float:focus-visible { outline: 3px solid #25D366; outline-offset: 4px; }
+@keyframes wa-enter {
+    from { opacity: 0; transform: translateY(24px) scale(.85); }
+    to   { opacity: 1; transform: none; }
+}
+/* gentle "wiggle" every few seconds to draw the eye */
+@keyframes wa-nudge {
+    0%, 86%, 100% { transform: none; }
+    88% { transform: rotate(-3deg) scale(1.04); }
+    90% { transform: rotate(3deg) scale(1.04); }
+    92% { transform: rotate(-2deg) scale(1.03); }
+    94% { transform: rotate(1deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .wa-float, .wa-float img { animation: none; transition: none; }
+}
+
 /* ── Marquee (announcement bar, brand + category strips) ── */
 .marquee {
     display: flex;

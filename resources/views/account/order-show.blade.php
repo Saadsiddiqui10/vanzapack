@@ -79,7 +79,7 @@
                     <button class="btn-navy w-full">Reorder</button>
                 </form>
                 @if($wa->enabledForOrder())
-                    <a href="{{ $wa->orderLink($order) }}" target="_blank" rel="noopener" class="btn w-full bg-[#25D366] text-white hover:opacity-90">Contact on WhatsApp</a>
+                    <button type="button" data-wa-href="{{ $wa->orderLink($order) }}" class="btn w-full bg-[#25D366] text-white hover:opacity-90">Contact on WhatsApp</button>
                 @endif
             </div>
         </div>

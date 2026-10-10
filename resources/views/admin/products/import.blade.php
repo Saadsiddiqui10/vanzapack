@@ -43,7 +43,7 @@
             </x-admin.field>
 
             <x-admin.field label="Photos ZIP (optional)" name="images_zip"
-                           hint="A .zip of JPG / PNG / WEBP photos. Photos are matched by the file names in the CSV “images” column, or automatically when named after the SKU (GC-10001.jpg, GC-10001-2.jpg) or the product name.">
+                           hint="A .zip of JPG / PNG / WEBP photos. Photos are matched by the file names in the CSV “images” column, or automatically when named after the SKU (VP-10001.jpg, VP-10001-2.jpg) or the product name.">
                 @if($zipSupported)
                     <input type="file" name="images_zip" accept=".zip,application/zip"
                            class="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:font-medium file:text-brand-700">

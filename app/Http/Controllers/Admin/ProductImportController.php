@@ -33,7 +33,7 @@ class ProductImportController extends Controller
     public function template()
     {
         $sample = [
-            'GC-EXAMPLE-1', 'Kraft Takeaway Box Medium', 'Kraft Boxes & Containers', 'KraftWorks',
+            'VP-EXAMPLE-1', 'Kraft Takeaway Box Medium', 'Kraft Boxes & Containers', 'KraftWorks',
             '35.00', '29.00', '18.00', '120', '15', 'active',
             'Grease-resistant kraft box for hot food.', '<p>Full HTML description here.</p>',
             '0.25', '1234567890123', '1', '1', '0', 'eco,takeaway,wholesale',
@@ -267,7 +267,7 @@ class ProductImportController extends Controller
         });
 
         if ($matched === 0) {
-            $result['errors'][] = 'No photo in the ZIP matched a product. Name each photo after the product SKU (e.g. GC-10001.jpg, GC-10001-2.jpg) or the exact product name, or upload a CSV with an "images" column.';
+            $result['errors'][] = 'No photo in the ZIP matched a product. Name each photo after the product SKU (e.g. VP-10001.jpg, VP-10001-2.jpg) or the exact product name, or upload a CSV with an "images" column.';
         }
     }
 

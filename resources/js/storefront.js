@@ -19,9 +19,19 @@ async function api(url, { method = 'GET', body = null } = {}) {
     return { ok: res.ok, status: res.status, data };
 }
 
+/* ------------------------------------------------------------- WhatsApp */
+// WhatsApp buttons carry the wa.me URL in data-wa-href instead of href, so the
+// browser never shows the long URL in the status bar on hover.
+document.addEventListener('click', (event) => {
+    const el = event.target.closest('[data-wa-href]');
+    if (!el) return;
+    event.preventDefault();
+    window.open(el.dataset.waHref, '_blank', 'noopener');
+});
+
 /* ---------------------------------------------------------------- Toasts */
-window.gcToast = function (message, type = 'success') {
-    window.dispatchEvent(new CustomEvent('gc-toast', { detail: { message, type } }));
+window.vpToast = function (message, type = 'success') {
+    window.dispatchEvent(new CustomEvent('vp-toast', { detail: { message, type } }));
 };
 
 Alpine.data('toastHub', () => ({
@@ -59,7 +69,7 @@ Alpine.data('addToCart', (productId, hasVariants = false) => ({
     busy: false,
     async submit() {
         if (hasVariants && !this.variantId) {
-            window.gcToast('Please choose the product options first.', 'error');
+            window.vpToast('Please choose the product options first.', 'error');
             return;
         }
         this.busy = true;
@@ -68,7 +78,7 @@ Alpine.data('addToCart', (productId, hasVariants = false) => ({
             body: { product_id: productId, variant_id: this.variantId, quantity: this.qty },
         });
         this.busy = false;
-        window.gcToast(data.message ?? (ok ? 'Added to cart.' : 'Could not add to cart.'), ok ? 'success' : 'error');
+        window.vpToast(data.message ?? (ok ? 'Added to cart.' : 'Could not add to cart.'), ok ? 'success' : 'error');
         if (ok) {
             Alpine.store('cart').setCount(data.cart_count);
             Alpine.store('cart').openDrawer();
@@ -84,7 +94,7 @@ Alpine.data('cartLine', (itemId) => ({
         const { ok, data } = await api(`/cart/${itemId}`, { method: 'PATCH', body: { quantity: qty } });
         this.busy = false;
         if (ok) { Alpine.store('cart').setCount(data.cart_count); window.location.reload(); }
-        else window.gcToast(data.message, 'error');
+        else window.vpToast(data.message, 'error');
     },
     async remove() {
         this.busy = true;
@@ -105,7 +115,7 @@ Alpine.data('wishlistButton', (slug, initial = false) => ({
         if (status === 401) { window.location = data.login_url ?? '/login'; return; }
         if (ok) {
             this.inList = data.in_list;
-            window.gcToast(data.message, 'success');
+            window.vpToast(data.message, 'success');
         }
     },
 }));
@@ -203,7 +213,7 @@ Alpine.data('asyncForm', () => ({
             body: Object.fromEntries(new FormData(form)),
         });
         this.busy = false;
-        window.gcToast(data.message ?? (ok ? 'Done.' : 'Something went wrong.'), ok ? 'success' : 'error');
+        window.vpToast(data.message ?? (ok ? 'Done.' : 'Something went wrong.'), ok ? 'success' : 'error');
         if (ok) form.reset();
     },
 }));

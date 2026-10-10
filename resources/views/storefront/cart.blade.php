@@ -71,8 +71,8 @@
                         <a href="{{ route('checkout.index') }}" class="btn-primary mt-4 w-full">Proceed to Checkout</a>
 
                         @if(app(\App\Services\WhatsAppService::class)->enabledForCart())
-                            <a href="{{ app(\App\Services\WhatsAppService::class)->cartLink($cart) }}" target="_blank" rel="noopener"
-                               class="btn mt-2 w-full bg-[#25D366] text-white hover:opacity-90">Order via WhatsApp</a>
+                            <button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->cartLink($cart) }}"
+                               class="btn mt-2 w-full bg-[#25D366] text-white hover:opacity-90">Order via WhatsApp</button>
                         @endif
                     </div>
                 </div>

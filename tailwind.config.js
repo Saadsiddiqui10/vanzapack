@@ -48,6 +48,17 @@ export default {
                     900: '#000026',
                 },
             },
+            // Green *text* uses the logo's forest green (#063d2a). Backgrounds/buttons keep
+            // the brand scale above; light shades (50–400, used on dark sections) are unchanged.
+            textColor: {
+                brand: {
+                    500: '#063d2a',
+                    600: '#0b5a3e', // hover: a touch lighter
+                    700: '#063d2a',
+                    800: '#063d2a',
+                    900: '#042a1d',
+                },
+            },
             boxShadow: {
                 card: '0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.1)',
                 'card-hover': '0 12px 32px -8px rgba(0,0,102,.18)',

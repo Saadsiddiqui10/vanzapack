@@ -194,7 +194,7 @@ class LoadCatalog extends Command
 
         foreach (array_slice($specs, 0, max($per, count($specs) >= $per ? $per : count($specs))) as $i => [$suffix, $price, $blurb, $variantAxis]) {
             $name = trim($category->name.' '.$suffix);
-            $sku = 'GC-'.(++$this->sku);
+            $sku = 'VP-'.(++$this->sku);
             $onSale = random_int(0, 100) < 35;
 
             $product = Product::create([

@@ -43,7 +43,7 @@
                 @endauth
                 <a href="{{ route('shop.index') }}" class="btn-outline">Continue shopping</a>
                 @if($wa->enabledForOrder())
-                    <a href="{{ $wa->orderLink($order) }}" target="_blank" rel="noopener" class="btn bg-[#25D366] text-white hover:opacity-90">Contact us on WhatsApp</a>
+                    <button type="button" data-wa-href="{{ $wa->orderLink($order) }}" class="btn bg-[#25D366] text-white hover:opacity-90">Contact us on WhatsApp</button>
                 @endif
             </div>
         </div>

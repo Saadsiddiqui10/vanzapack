@@ -40,8 +40,8 @@
         <a href="{{ route('checkout.index') }}" class="btn-primary w-full">Checkout</a>
         <a href="{{ route('cart.index') }}" class="btn-outline w-full" @click="$store.cart.close()">View cart</a>
         @if(app(\App\Services\WhatsAppService::class)->enabledForCart())
-            <a href="{{ app(\App\Services\WhatsAppService::class)->cartLink($cart) }}" target="_blank" rel="noopener"
-               class="btn w-full bg-[#25D366] text-white hover:opacity-90">Order via WhatsApp</a>
+            <button type="button" data-wa-href="{{ app(\App\Services\WhatsAppService::class)->cartLink($cart) }}"
+               class="btn w-full bg-[#25D366] text-white hover:opacity-90">Order via WhatsApp</button>
         @endif
     </div>
 @endif

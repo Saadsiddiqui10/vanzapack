@@ -56,8 +56,8 @@ Route::middleware('storefront')->group(function () {
 
     // Contact + newsletter
     Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-    Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
+    Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+    Route::post('/newsletter', [NewsletterController::class, 'store'])->middleware('throttle:5,1')->name('newsletter.store');
 
     // Checkout
     Route::middleware('throttle:20,1')->group(function () {
