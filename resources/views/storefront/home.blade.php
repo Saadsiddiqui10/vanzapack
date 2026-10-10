@@ -71,15 +71,15 @@
         @endforeach
     </section>
 
-    {{-- ── Shop by Category + Trusted Brands (auto-scrolling) ── --}}
-    @if($featuredCategories->isNotEmpty() || $brands->isNotEmpty())
+    {{-- ── Shop by Category (auto-scrolling) ── --}}
+    @if($featuredCategories->isNotEmpty())
         <section class="py-8">
             @if($featuredCategories->isNotEmpty())
                 <div class="container-page mb-3 flex items-end justify-between">
                     <x-section-heading title="Shop by Category" />
                     <a href="{{ route('shop.index') }}" class="link text-sm">View all →</a>
                 </div>
-                <div class="marquee mb-8 py-1" style="--marquee-duration: {{ max(24, $featuredCategories->count() * 6) }}s; --marquee-gap: 1rem;">
+                <div class="marquee py-1" style="--marquee-duration: {{ max(24, $featuredCategories->count() * 6) }}s; --marquee-gap: 1rem;">
                     @foreach([1, 2] as $pass)
                         <div class="marquee__track" aria-hidden="{{ $pass === 2 ? 'true' : 'false' }}">
                             @foreach($featuredCategories as $category)
@@ -100,28 +100,6 @@
                 </div>
             @endif
 
-            @if($brands->isNotEmpty())
-                <div class="container-page mb-3 flex items-end justify-between">
-                    <x-section-heading title="Trusted Brands" />
-                    <a href="{{ route('brands.index') }}" class="link text-sm">All brands →</a>
-                </div>
-                <div class="marquee py-1" style="--marquee-duration: {{ max(20, $brands->count() * 5) }}s; --marquee-gap: 1rem;">
-                    @foreach([1, 2] as $pass)
-                        <div class="marquee__track" aria-hidden="{{ $pass === 2 ? 'true' : 'false' }}">
-                            @foreach($brands as $brand)
-                                <a href="{{ route('brands.show', $brand->slug) }}"
-                                   class="flex h-24 w-40 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-white p-4 transition hover:border-brand-500 hover:shadow-card">
-                                    @if($brand->logo)
-                                        <img src="{{ $brand->logoUrl() }}" alt="{{ $brand->name }}" class="max-h-14 max-w-full object-contain" loading="lazy">
-                                    @else
-                                        <span class="text-center text-sm font-semibold text-brand-800">{{ $brand->name }}</span>
-                                    @endif
-                                </a>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
-            @endif
         </section>
     @endif
 

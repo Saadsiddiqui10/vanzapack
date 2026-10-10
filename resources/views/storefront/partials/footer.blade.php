@@ -41,7 +41,6 @@
                     <li><a href="{{ route('shop.index') }}" class="hover:text-brand-400">All Products</a></li>
                     <li><a href="{{ route('shop.offers') }}" class="hover:text-brand-400">Mega Deals</a></li>
                     <li><a href="{{ route('shop.new') }}" class="hover:text-brand-400">New Arrivals</a></li>
-                    <li><a href="{{ route('brands.index') }}" class="hover:text-brand-400">Brands</a></li>
                 </ul>
             </div>
 

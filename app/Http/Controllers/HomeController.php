@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Collection;
@@ -30,8 +29,6 @@ class HomeController extends Controller
             'dealProducts' => Product::active()->whereNotNull('sale_price')
                 ->whereColumn('sale_price', '<', 'price')->with($productCard)
                 ->orderByRaw('(price - sale_price) / price DESC')->take(10)->get(),
-            'brands' => Brand::active()->featured()->take(20)->get()
-                ->whenEmpty(fn () => Brand::active()->orderBy('name')->take(12)->get()),
         ]);
     }
 

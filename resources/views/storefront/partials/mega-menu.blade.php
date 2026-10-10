@@ -4,13 +4,13 @@
         ->with('images')->inRandomOrder()->first();
 @endphp
 
-<nav class="hidden bg-navy-600 text-white lg:block" aria-label="Primary">
+<nav class="hidden bg-brand-700 text-white lg:block" aria-label="Primary">
     <div class="container-page">
         <ul class="flex items-center gap-1 text-sm font-medium text-white">
             @forelse($navMenuItems as $menuItem)
                 @if($menuItem->isMega())
                     <li x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="static">
-                        <button class="flex items-center gap-1 px-3 py-3 transition hover:text-brand-300" @click="open = !open">
+                        <button class="flex items-center gap-1 px-3 py-3 transition hover:text-accent" @click="open = !open">
                             {{ $menuItem->label }}
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
                         </button>
@@ -70,12 +70,12 @@
                 @else
                     <li>
                         <a href="{{ $menuItem->href() }}" @if($menuItem->open_in_new_tab) target="_blank" rel="noopener" @endif
-                           class="block px-3 py-3 transition hover:text-brand-300">{{ $menuItem->label }}</a>
+                           class="block px-3 py-3 transition hover:text-accent">{{ $menuItem->label }}</a>
                     </li>
                 @endif
             @empty
-                <li><a href="{{ route('home') }}" class="block px-3 py-3 transition hover:text-brand-300">Home</a></li>
-                <li><a href="{{ route('shop.index') }}" class="block px-3 py-3 transition hover:text-brand-300">Shop</a></li>
+                <li><a href="{{ route('home') }}" class="block px-3 py-3 transition hover:text-accent">Home</a></li>
+                <li><a href="{{ route('shop.index') }}" class="block px-3 py-3 transition hover:text-accent">Shop</a></li>
             @endforelse
         </ul>
     </div>
