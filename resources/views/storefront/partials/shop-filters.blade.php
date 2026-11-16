@@ -29,14 +29,16 @@
         </ul>
     </div>
 
-    <div>
-        <h3 class="mb-2 font-semibold text-brand-800">Price ({{ settings('currency', 'AED') }})</h3>
-        <div class="flex items-center gap-2">
-            <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="{{ $priceBounds['min'] }}" class="field py-1.5">
-            <span class="text-slate-400">–</span>
-            <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="{{ $priceBounds['max'] }}" class="field py-1.5">
+    @unless(catalog_mode())
+        <div>
+            <h3 class="mb-2 font-semibold text-brand-800">Price ({{ settings('currency', 'AED') }})</h3>
+            <div class="flex items-center gap-2">
+                <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="{{ $priceBounds['min'] }}" class="field py-1.5">
+                <span class="text-slate-400">–</span>
+                <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="{{ $priceBounds['max'] }}" class="field py-1.5">
+            </div>
         </div>
-    </div>
+    @endunless
 
     @foreach($filterAttributes as $attribute)
         <div>

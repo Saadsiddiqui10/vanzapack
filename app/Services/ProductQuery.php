@@ -21,6 +21,14 @@ class ProductQuery
         'discount' => 'Biggest Discount',
     ];
 
+    /** Sort options to offer; price-based ones are hidden in catalog mode (no visible prices). */
+    public static function visibleSorts(): array
+    {
+        return catalog_mode()
+            ? array_diff_key(self::SORTS, array_flip(['price_asc', 'price_desc', 'discount']))
+            : self::SORTS;
+    }
+
     public function apply(Request $request, ?Builder $base = null): Builder
     {
         $query = ($base ?? Product::query())

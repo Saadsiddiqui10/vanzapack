@@ -70,3 +70,14 @@ if (! function_exists('whatsapp_link')) {
         return $url;
     }
 }
+
+if (! function_exists('catalog_mode')) {
+    /**
+     * Catalog mode (Admin → Settings → catalog_mode): no prices or cart on the storefront —
+     * customers use the WhatsApp "Ask for price" button instead.
+     */
+    function catalog_mode(): bool
+    {
+        return (bool) settings('catalog_mode', true);
+    }
+}

@@ -11,7 +11,8 @@
         'description' => strip_tags($product->short_description ?? $product->description ?? ''),
         'sku' => $product->sku,
         'brand' => $product->brand ? ['@type' => 'Brand', 'name' => $product->brand->name] : null,
-        'offers' => [
+        // Catalog mode: no price in Google's product data either (prices are given on WhatsApp)
+        'offers' => catalog_mode() ? null : [
             '@type' => 'Offer',
             'priceCurrency' => settings('currency', 'AED'),
             'price' => number_format($product->currentPrice(), 2, '.', ''),
@@ -80,13 +81,15 @@
                     <span class="text-sm text-slate-400">SKU: <span x-text="'{{ $product->sku }}'"></span></span>
                 </div>
 
-                <div class="mt-4 flex items-center gap-3 text-2xl">
-                    <span class="font-bold text-brand-800" x-text="price"></span>
-                    @if($product->isOnSale())
-                        <span class="text-lg text-slate-400 line-through">{{ money($product->price) }}</span>
-                        <span class="badge bg-rose-100 text-rose-700">Save {{ $product->discountPercent() }}%</span>
-                    @endif
-                </div>
+                @unless(catalog_mode())
+                    <div class="mt-4 flex items-center gap-3 text-2xl">
+                        <span class="font-bold text-brand-800" x-text="price"></span>
+                        @if($product->isOnSale())
+                            <span class="text-lg text-slate-400 line-through">{{ money($product->price) }}</span>
+                            <span class="badge bg-rose-100 text-rose-700">Save {{ $product->discountPercent() }}%</span>
+                        @endif
+                    </div>
+                @endunless
 
                 @if($product->short_description)
                     <p class="mt-4 text-slate-600">{{ $product->short_description }}</p>

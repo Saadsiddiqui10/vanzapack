@@ -8,7 +8,7 @@
 <div class="group card relative flex h-full w-full flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-card-hover">
     {{-- Badges --}}
     <div class="absolute left-3 top-3 z-10 flex flex-col gap-1">
-        @if($product->isOnSale())
+        @if($product->isOnSale() && ! catalog_mode())
             <span class="badge bg-rose-500 text-white">-{{ $product->discountPercent() }}%</span>
         @endif
         @if($product->is_new_arrival)
@@ -56,9 +56,11 @@
         </div>
 
         {{-- Discount % is already shown as the corner badge --}}
-        <div class="mt-2 flex flex-wrap items-baseline gap-x-2">
-            <x-price :product="$product" :show-discount="false" />
-        </div>
+        @unless(catalog_mode())
+            <div class="mt-2 flex flex-wrap items-baseline gap-x-2">
+                <x-price :product="$product" :show-discount="false" />
+            </div>
+        @endunless
 
         <div class="mt-auto pt-4">
             @if(app(\App\Services\WhatsAppService::class)->catalogMode())

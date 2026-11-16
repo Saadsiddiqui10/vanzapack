@@ -57,9 +57,11 @@
                                             <div class="p-4">
                                                 <span class="badge bg-brand-100 text-brand-800">Deal of the day</span>
                                                 <p class="mt-1 line-clamp-2 text-sm font-semibold text-brand-800">{{ $featuredDeal->name }}</p>
-                                                <p class="mt-1 text-sm text-brand-700">{{ money($featuredDeal->currentPrice()) }}
-                                                    <span class="text-slate-400 line-through">{{ money($featuredDeal->price) }}</span>
-                                                </p>
+                                                @unless(catalog_mode())
+                                                    <p class="mt-1 text-sm text-brand-700">{{ money($featuredDeal->currentPrice()) }}
+                                                        <span class="text-slate-400 line-through">{{ money($featuredDeal->price) }}</span>
+                                                    </p>
+                                                @endunless
                                             </div>
                                         </a>
                                     @endif

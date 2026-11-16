@@ -78,7 +78,7 @@ class WhatsAppService
      */
     public function catalogMode(): bool
     {
-        return (bool) settings('catalog_mode', true);
+        return catalog_mode();
     }
 
     /** First lines of an "Ask for price" message; the product page appends options/quantity in JS. */

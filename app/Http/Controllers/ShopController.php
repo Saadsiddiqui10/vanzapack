@@ -99,7 +99,7 @@ class ShopController extends Controller
                 ->with(['children' => fn ($q) => $q->active()->withCount(['products' => fn ($p) => $p->active()])])
                 ->orderBy('position')->get(),
             'filterAttributes' => Attribute::where('is_variation', true)->with('values')->orderBy('position')->get(),
-            'sorts' => ProductQuery::SORTS,
+            'sorts' => ProductQuery::visibleSorts(),
             'priceBounds' => [
                 'min' => (int) floor((float) Product::active()->min('price')),
                 'max' => (int) ceil((float) Product::active()->max('price')),

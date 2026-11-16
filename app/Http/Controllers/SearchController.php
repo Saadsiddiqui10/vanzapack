@@ -20,7 +20,7 @@ class SearchController extends Controller
         return view('storefront.search', [
             'term' => $term,
             'products' => $products,
-            'sorts' => ProductQuery::SORTS,
+            'sorts' => ProductQuery::visibleSorts(),
         ]);
     }
 
@@ -40,7 +40,7 @@ class SearchController extends Controller
             ->map(fn (Product $p) => [
                 'name' => $p->name,
                 'url' => $p->url(),
-                'price' => money($p->currentPrice()),
+                'price' => catalog_mode() ? '' : money($p->currentPrice()),
                 'image' => $p->primaryImageUrl(),
             ]);
 
