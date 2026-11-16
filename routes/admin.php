@@ -40,6 +40,8 @@ Route::prefix('admin')
             Route::get('products/import/template', [ProductImportController::class, 'template'])->name('products.import.template');
             Route::get('products/import/missing-photos', [ProductImportController::class, 'missingPhotos'])->name('products.import.missing-photos');
             Route::delete('products/bulk/destroy', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
+            Route::post('products/bulk/status', [ProductController::class, 'bulkStatus'])->name('products.bulk-status');
+            Route::post('products/drafts/status', [ProductController::class, 'draftsStatus'])->name('products.drafts-status');
             Route::post('products/bulk/restore', [ProductController::class, 'bulkRestore'])->name('products.bulk-restore');
             Route::delete('products/bulk/force', [ProductController::class, 'bulkForceDestroy'])->name('products.bulk-force');
             Route::put('products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');

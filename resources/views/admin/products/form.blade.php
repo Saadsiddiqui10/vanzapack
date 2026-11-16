@@ -140,7 +140,7 @@
     </form>
 
     @if($product->exists)
-        <form id="delete-product" method="POST" action="{{ route('admin.products.destroy', $product) }}" onsubmit="return confirm('Archive this product?')">
+        <form id="delete-product" method="POST" action="{{ route('admin.products.destroy', $product) }}" onsubmit="return confirm('Move this product to the bin? You can restore it from the Bin tab.')">
             @csrf @method('DELETE')
         </form>
     @endif

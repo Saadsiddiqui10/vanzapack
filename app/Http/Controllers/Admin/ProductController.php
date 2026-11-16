@@ -35,6 +35,7 @@ class ProductController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'trashed' => $trashed,
             'archivedCount' => Product::onlyTrashed()->count(),
+            'draftCount' => Product::where('status', 'draft')->count(),
         ]);
     }
 
@@ -89,7 +90,7 @@ class ProductController extends Controller
         $product->delete();
         ActivityLogger::log('product.deleted', "Deleted product {$product->name}", $product);
 
-        return redirect()->route('admin.products.index')->with('success', 'Product archived.');
+        return redirect()->route('admin.products.index')->with('success', 'Product moved to the bin.');
     }
 
     public function bulkDestroy(Request $request)
@@ -97,10 +98,48 @@ class ProductController extends Controller
         $ids = $this->validatedIds($request);
 
         $count = Product::whereIn('id', $ids)->get()->each->delete()->count();
-        ActivityLogger::log('product.bulk_deleted', "Archived {$count} product(s)");
+        ActivityLogger::log('product.bulk_deleted', "Moved {$count} product(s) to the bin");
 
         return redirect()->route('admin.products.index')
-            ->with('success', "{$count} product(s) archived. They can be restored from the Archived tab.");
+            ->with('success', "{$count} product(s) moved to the bin. They can be restored from the Bin tab.");
+    }
+
+    // ── Status (active = in the store; draft / archived = hidden) ───
+    private const STATUS_LABELS = ['active' => 'active', 'draft' => 'draft', 'archived' => 'archived (hidden from the store)'];
+
+    /** Set the status of the ticked products. */
+    public function bulkStatus(Request $request)
+    {
+        $ids = $this->validatedIds($request);
+        $status = $request->validate(['status' => ['required', Rule::in(array_keys(self::STATUS_LABELS))]])['status'];
+
+        $count = $this->applyStatus(Product::whereIn('id', $ids), $status);
+        ActivityLogger::log('product.bulk_status', "Set {$count} product(s) to {$status}");
+
+        return back()->with('success', "{$count} product(s) set to ".self::STATUS_LABELS[$status].'.');
+    }
+
+    /** Make every draft product active, or archive every draft — not just the current page. */
+    public function draftsStatus(Request $request)
+    {
+        $status = $request->validate(['status' => ['required', Rule::in(['active', 'archived'])]])['status'];
+
+        $count = $this->applyStatus(Product::where('status', 'draft'), $status);
+        ActivityLogger::log('product.drafts_status', "Set all {$count} draft product(s) to {$status}");
+
+        return back()->with('success', "All {$count} draft product(s) set to ".self::STATUS_LABELS[$status].'.');
+    }
+
+    private function applyStatus($query, string $status): int
+    {
+        // One model at a time so model events / cache clearing still run.
+        return $query->get()->each(function (Product $product) use ($status) {
+            $product->status = $status;
+            if ($status === 'active' && ! $product->published_at) {
+                $product->published_at = now(); // first time it goes live
+            }
+            $product->save();
+        })->count();
     }
 
     // ── Archive (soft-delete) management ────────────────────────────

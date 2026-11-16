@@ -7,15 +7,37 @@
         </x-slot:actions>
     </x-admin.head>
 
-    {{-- Active / Archived tabs --}}
+    {{-- Products / Bin tabs ("Bin" = deleted products that can still be restored) --}}
     <div class="mb-4 flex gap-2 text-sm">
         <a href="{{ route('admin.products.index') }}"
-           class="rounded-lg px-3 py-1.5 {{ $trashed ? 'bg-white border border-slate-200' : 'bg-brand-700 text-white' }}">Active</a>
+           class="rounded-lg px-3 py-1.5 {{ $trashed ? 'bg-white border border-slate-200' : 'bg-brand-700 text-white' }}">Products</a>
         <a href="{{ route('admin.products.index', ['trashed' => 1]) }}"
            class="rounded-lg px-3 py-1.5 {{ $trashed ? 'bg-brand-700 text-white' : 'bg-white border border-slate-200' }}">
-            Archived @if($archivedCount)<span class="ml-1 rounded-full bg-rose-100 px-1.5 text-xs text-rose-700">{{ $archivedCount }}</span>@endif
+            Bin @if($archivedCount)<span class="ml-1 rounded-full bg-rose-100 px-1.5 text-xs text-rose-700">{{ $archivedCount }}</span>@endif
         </a>
     </div>
+
+    {{-- All drafts at once (every page, not only the ticked rows) --}}
+    @if(! $trashed && $draftCount > 0)
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm">
+            <p class="text-amber-900">
+                <strong>{{ $draftCount }} draft {{ Str::plural('product', $draftCount) }}</strong> — not visible in the store.
+                <a href="{{ route('admin.products.index', ['status' => 'draft']) }}" class="ml-1 underline hover:no-underline">View drafts</a>
+            </p>
+            <div class="flex flex-wrap gap-2">
+                <form method="POST" action="{{ route('admin.products.drafts-status') }}"
+                      onsubmit="return confirm('Make all {{ $draftCount }} draft products active (visible in the store)?')">
+                    @csrf <input type="hidden" name="status" value="active">
+                    <button class="btn bg-brand-700 px-3 py-1.5 text-xs text-white hover:bg-brand-800">Make all active</button>
+                </form>
+                <form method="POST" action="{{ route('admin.products.drafts-status') }}"
+                      onsubmit="return confirm('Archive all {{ $draftCount }} draft products?')">
+                    @csrf <input type="hidden" name="status" value="archived">
+                    <button class="btn border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50">Archive all</button>
+                </form>
+            </div>
+        </div>
+    @endif
 
     @unless($trashed)
         <form method="GET" class="mb-4 flex flex-wrap gap-2">
@@ -58,11 +80,23 @@
                         <button class="btn bg-rose-600 px-3 py-1.5 text-xs text-white hover:bg-rose-700">Delete permanently</button>
                     </form>
                 @else
+                    {{-- Change status of the ticked products --}}
+                    @foreach([
+                        'active' => ['Set active', 'bg-brand-700 text-white hover:bg-brand-800'],
+                        'draft' => ['Set draft', 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'],
+                        'archived' => ['Archive (hide)', 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'],
+                    ] as $status => [$label, $classes])
+                        <form method="POST" action="{{ route('admin.products.bulk-status') }}">
+                            @csrf <input type="hidden" name="status" value="{{ $status }}">
+                            <template x-for="id in selected" :key="id"><input type="hidden" name="ids[]" :value="id"></template>
+                            <button class="btn px-3 py-1.5 text-xs {{ $classes }}">{{ $label }}</button>
+                        </form>
+                    @endforeach
                     <form method="POST" action="{{ route('admin.products.bulk-destroy') }}"
-                          @submit="if (!confirm('Archive ' + selected.length + ' selected product(s)?')) $event.preventDefault()">
+                          @submit="if (!confirm('Move ' + selected.length + ' selected product(s) to the bin?')) $event.preventDefault()">
                         @csrf @method('DELETE')
                         <template x-for="id in selected" :key="id"><input type="hidden" name="ids[]" :value="id"></template>
-                        <button class="btn bg-rose-600 px-3 py-1.5 text-xs text-white hover:bg-rose-700">Archive selected</button>
+                        <button class="btn bg-rose-600 px-3 py-1.5 text-xs text-white hover:bg-rose-700">Move to bin</button>
                     </form>
                 @endif
             </div>
@@ -79,7 +113,7 @@
                         <th class="px-4 py-3">SKU</th>
                         <th class="px-4 py-3">Category</th>
                         <th class="px-4 py-3">Price</th>
-                        <th class="px-4 py-3">{{ $trashed ? 'Archived' : 'Stock' }}</th>
+                        <th class="px-4 py-3">{{ $trashed ? 'Moved to bin' : 'Stock' }}</th>
                         <th class="px-4 py-3">Status</th>
                         <th class="px-4 py-3"></th>
                     </tr>
