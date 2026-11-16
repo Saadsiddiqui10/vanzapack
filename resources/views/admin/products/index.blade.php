@@ -39,6 +39,48 @@
         </div>
     @endif
 
+    {{-- Stock for all / out-of-stock / low-stock products at once (every page) --}}
+    @unless($trashed)
+        <details class="mb-4 rounded-xl border border-slate-200 bg-white text-sm" @if($outOfStockCount) open @endif>
+            <summary class="flex cursor-pointer flex-wrap items-center justify-between gap-2 px-4 py-3 font-semibold text-brand-800">
+                <span>Update stock in bulk</span>
+                <span class="text-xs font-normal text-slate-500">
+                    <span class="{{ $outOfStockCount ? 'font-semibold text-rose-600' : '' }}">{{ $outOfStockCount }} out of stock</span>
+                    · {{ $lowStockCount }} low stock
+                    <span class="hidden sm:inline">(counts include each size / pack)</span>
+                </span>
+            </summary>
+            <form method="POST" action="{{ route('admin.products.bulk-stock') }}"
+                  x-data="{ scope: '{{ $outOfStockCount ? 'out_of_stock' : 'all' }}', mode: 'set', qty: 100 }"
+                  @submit="if (!confirm('Update stock for ' + {all: 'ALL products', out_of_stock: 'every out-of-stock item', low_stock: 'every low-stock item'}[scope] + ': ' + {set: 'set to', add: 'add', subtract: 'subtract'}[mode] + ' ' + qty + '?')) $event.preventDefault()"
+                  class="flex flex-wrap items-end gap-3 border-t border-slate-100 px-4 py-3">
+                @csrf
+                <label class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-500">Apply to</span>
+                    <select name="scope" x-model="scope" class="field w-48 py-1.5 text-sm">
+                        <option value="all">All products</option>
+                        <option value="out_of_stock">Only out of stock ({{ $outOfStockCount }})</option>
+                        <option value="low_stock">Only low stock ({{ $lowStockCount }})</option>
+                    </select>
+                </label>
+                <label class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-500">Action</span>
+                    <select name="mode" x-model="mode" class="field w-36 py-1.5 text-sm">
+                        <option value="set">Set stock to</option>
+                        <option value="add">Add</option>
+                        <option value="subtract">Subtract</option>
+                    </select>
+                </label>
+                <label class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-500">Quantity</span>
+                    <input type="number" name="quantity" x-model.number="qty" min="0" max="1000000" required class="field w-28 py-1.5 text-sm">
+                </label>
+                <button class="btn bg-brand-700 px-4 py-2 text-xs text-white hover:bg-brand-800">Update stock</button>
+                <p class="w-full text-xs text-slate-400">Products with sizes or packs update every size. Changes are recorded in each product's stock history.</p>
+            </form>
+        </details>
+    @endunless
+
     @unless($trashed)
         <form method="GET" class="mb-4 flex flex-wrap gap-2">
             <input name="q" value="{{ request('q') }}" placeholder="Search name or SKU" class="field w-64 py-2 text-sm">
@@ -92,6 +134,22 @@
                             <button class="btn px-3 py-1.5 text-xs {{ $classes }}">{{ $label }}</button>
                         </form>
                     @endforeach
+
+                    {{-- Stock for the ticked products --}}
+                    <form method="POST" action="{{ route('admin.products.bulk-stock') }}" class="flex items-center gap-1"
+                          x-data="{ mode: 'set' }">
+                        @csrf <input type="hidden" name="scope" value="selected">
+                        <template x-for="id in selected" :key="id"><input type="hidden" name="ids[]" :value="id"></template>
+                        <select name="mode" x-model="mode" class="field w-auto py-1 pl-2 pr-7 text-xs" aria-label="Stock action">
+                            <option value="set">Stock =</option>
+                            <option value="add">Stock +</option>
+                            <option value="subtract">Stock −</option>
+                        </select>
+                        <input type="number" name="quantity" min="0" max="1000000" required placeholder="Qty"
+                               class="field w-20 py-1 text-xs" aria-label="Quantity">
+                        <button class="btn border border-brand-700 bg-white px-3 py-1.5 text-xs text-brand-800 hover:bg-brand-50">Update stock</button>
+                    </form>
+
                     <form method="POST" action="{{ route('admin.products.bulk-destroy') }}"
                           @submit="if (!confirm('Move ' + selected.length + ' selected product(s) to the bin?')) $event.preventDefault()">
                         @csrf @method('DELETE')

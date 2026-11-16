@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Services\InventoryService;
 use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +37,9 @@ class ProductController extends Controller
             'trashed' => $trashed,
             'archivedCount' => Product::onlyTrashed()->count(),
             'draftCount' => Product::where('status', 'draft')->count(),
+            // stock records (a product with sizes/packs has one per variant)
+            'outOfStockCount' => Inventory::whereHas('product')->whereRaw('quantity - reserved <= 0')->count(),
+            'lowStockCount' => Inventory::whereHas('product')->whereRaw('quantity - reserved <= low_stock_threshold')->count(),
         ]);
     }
 
@@ -128,6 +132,71 @@ class ProductController extends Controller
         ActivityLogger::log('product.drafts_status', "Set all {$count} draft product(s) to {$status}");
 
         return back()->with('success', "All {$count} draft product(s) set to ".self::STATUS_LABELS[$status].'.');
+    }
+
+    // ── Bulk stock ──────────────────────────────────────────────────
+    /**
+     * Update stock for ticked products, or for all / out-of-stock / low-stock products.
+     * Products with variants update every variant's stock.
+     */
+    public function bulkStock(Request $request, InventoryService $inventory)
+    {
+        $data = $request->validate([
+            'scope' => ['required', Rule::in(['selected', 'all', 'out_of_stock', 'low_stock'])],
+            'mode' => ['required', Rule::in(['set', 'add', 'subtract'])],
+            'quantity' => ['required', 'integer', 'min:0', 'max:1000000'],
+            'ids' => ['required_if:scope,selected', 'array'],
+            'ids.*' => ['integer'],
+        ]);
+
+        @set_time_limit(0);
+        $qty = (int) $data['quantity'];
+        $updated = 0;
+        $products = 0;
+
+        Product::query()
+            ->when($data['scope'] === 'selected', fn ($q) => $q->whereIn('id', $data['ids']))
+            ->with('variants')
+            ->orderBy('id')
+            ->chunk(100, function ($chunk) use ($inventory, $data, $qty, &$updated, &$products) {
+                foreach ($chunk as $product) {
+                    $touched = false;
+                    $targets = $product->has_variants && $product->variants->isNotEmpty() ? $product->variants : [null];
+
+                    foreach ($targets as $variant) {
+                        $row = $inventory->for($product, $variant);
+
+                        if ($data['scope'] === 'out_of_stock' && $row->available() > 0) {
+                            continue;
+                        }
+                        if ($data['scope'] === 'low_stock' && ! ($row->isLow() || $row->available() <= 0)) {
+                            continue;
+                        }
+
+                        $new = match ($data['mode']) {
+                            'set' => $qty,
+                            'add' => $row->quantity + $qty,
+                            'subtract' => max(0, $row->quantity - $qty),
+                        };
+                        if ($new === (int) $row->quantity) {
+                            continue;
+                        }
+
+                        $inventory->adjust($row, $new, 'Bulk stock update', notify: false);
+                        $updated++;
+                        $touched = true;
+                    }
+
+                    $products += $touched ? 1 : 0;
+                }
+            });
+
+        $verb = ['set' => "set to {$qty}", 'add' => "increased by {$qty}", 'subtract' => "reduced by {$qty}"][$data['mode']];
+        ActivityLogger::log('product.bulk_stock', "Bulk stock ({$data['scope']}): {$verb} on {$updated} stock record(s)");
+
+        return back()->with('success', $updated
+            ? "Stock {$verb} for {$products} product(s) ({$updated} stock record(s) including sizes/packs)."
+            : 'No stock needed changing.');
     }
 
     private function applyStatus($query, string $status): int

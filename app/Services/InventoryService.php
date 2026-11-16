@@ -74,14 +74,19 @@ class InventoryService
         });
     }
 
-    public function adjust(Inventory $inventory, int $newQuantity, ?string $note = null): void
+    /**
+     * @param  bool  $notify  false for bulk updates, so hundreds of rows don't each email a low-stock alert
+     */
+    public function adjust(Inventory $inventory, int $newQuantity, ?string $note = null, bool $notify = true): void
     {
-        DB::transaction(function () use ($inventory, $newQuantity, $note) {
+        DB::transaction(function () use ($inventory, $newQuantity, $note, $notify) {
             $delta = $newQuantity - $inventory->quantity;
             $inventory->quantity = $newQuantity;
             $inventory->save();
             $this->record($inventory, StockMovementType::Adjustment, $delta, null, $note);
-            $this->checkLowStock($inventory);
+            if ($notify) {
+                $this->checkLowStock($inventory);
+            }
         });
     }
 
