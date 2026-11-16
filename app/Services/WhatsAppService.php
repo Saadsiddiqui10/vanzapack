@@ -72,6 +72,35 @@ class WhatsAppService
         return whatsapp_link($message);
     }
 
+    /**
+     * Catalog mode: prices are quoted on WhatsApp instead of buying online
+     * (Admin → Settings → catalog_mode). On by default.
+     */
+    public function catalogMode(): bool
+    {
+        return (bool) settings('catalog_mode', true);
+    }
+
+    /** First lines of an "Ask for price" message; the product page appends options/quantity in JS. */
+    public function priceEnquiryLines(Product $product): array
+    {
+        return [
+            'Hello '.settings('store_name', 'VanzaPack').', I would like to know the price of:',
+            '',
+            "Product: {$product->name}",
+            "SKU: {$product->sku}",
+        ];
+    }
+
+    public function priceEnquiryLink(Product $product): string
+    {
+        $lines = $this->priceEnquiryLines($product);
+        $lines[] = '';
+        $lines[] = 'Product URL: '.$product->url();
+
+        return whatsapp_link(implode("\n", $lines));
+    }
+
     public function supportLink(): string
     {
         return whatsapp_link(settings('whatsapp_default_message', 'Hello, I have a question.'));

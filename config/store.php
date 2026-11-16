@@ -9,7 +9,7 @@ return [
     'support_email' => 'support@vanzapack.com',
     'phone' => '+971 4 262 7225',
     'landline' => '+971 4 262 7225',
-    'address' => 'Down Town Jebel Ali St 19, JAFZA View, 1st Floor Tower 18, Dubai, United Arab Emirates',
+    'address' => 'Jebel Ali, UAE.',
     'business_hours' => 'Monday - Saturday : 9:00AM - 6:00PM',
 
     'whatsapp_country_code' => env('STORE_WHATSAPP_COUNTRY_CODE', '971'),

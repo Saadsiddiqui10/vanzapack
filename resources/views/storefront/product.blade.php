@@ -120,6 +120,40 @@
                     <template x-if="!inStock"><span class="text-rose-600">Currently unavailable</span></template>
                 </p>
 
+                @if($wa->catalogMode())
+                    {{-- Catalog mode: quantity + "Ask for price" on WhatsApp, with the chosen options in the message --}}
+                    @php
+                        $optionLabels = [];
+                        foreach ($variantOptions as $attrName => $data) {
+                            foreach ($data['values'] as $value) {
+                                $optionLabels[$value->id] = $attrName.': '.$value->value;
+                            }
+                        }
+                    @endphp
+                    <div class="mt-4 flex flex-wrap items-center gap-3"
+                         x-data="{
+                            qty: 1,
+                            labels: @js($optionLabels),
+                            ask() {
+                                const lines = @js($wa->priceEnquiryLines($product));
+                                Object.values(this.selected).forEach(id => this.labels[id] && lines.push(this.labels[id]));
+                                lines.push('Quantity: ' + this.qty, '', 'Product URL: ' + @js($product->url()));
+                                window.open(@js(whatsapp_link()) + '?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+                            },
+                         }">
+                        <div class="flex items-center rounded-lg border border-slate-200">
+                            <button type="button" class="px-3 py-2 text-slate-500" @click="qty = Math.max(1, qty - 1)">−</button>
+                            <input type="number" class="qty-input w-14 border-0 text-center text-sm focus:ring-0" x-model.number="qty" min="1" aria-label="Quantity">
+                            <button type="button" class="px-3 py-2 text-slate-500" @click="qty++">+</button>
+                        </div>
+
+                        <button type="button" @click="ask()"
+                                class="btn flex-1 items-center justify-center gap-2 whitespace-nowrap bg-[#25D366] text-white hover:bg-[#1ebe5b] sm:flex-none sm:px-8">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.4-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 2.9 1.2 2.9.8 3.4.8.5 0 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2"/></svg>
+                            Ask for price
+                        </button>
+                    </div>
+                @else
                 {{-- Add to cart --}}
                 <div class="mt-4 flex flex-wrap items-center gap-3"
                      x-data="{ qty: 1 }">
@@ -148,6 +182,7 @@
                     {{-- full-width second row on phones so neither button gets squeezed --}}
                     <a href="{{ route('checkout.index') }}" class="btn-navy w-full whitespace-nowrap sm:w-auto" x-show="inStock">Buy Now</a>
                 </div>
+                @endif
 
                 <div class="mt-3 flex flex-wrap gap-3 text-sm">
                     <button type="button"
@@ -157,7 +192,7 @@
                         <span x-text="inList ? 'Saved to wishlist' : 'Add to wishlist'"></span>
                     </button>
 
-                    @if($wa->enabledForProduct())
+                    @if($wa->enabledForProduct() && ! $wa->catalogMode())
                         <button type="button" data-wa-href="{{ $wa->productLink($product) }}"
                            class="inline-flex items-center gap-1.5 text-[#128C7E] hover:underline">
                             💬 Order / Enquire on WhatsApp

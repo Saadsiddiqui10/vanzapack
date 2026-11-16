@@ -61,7 +61,9 @@
         </div>
 
         <div class="mt-auto pt-4">
-            @if($product->has_variants)
+            @if(app(\App\Services\WhatsAppService::class)->catalogMode())
+                <x-ask-price :product="$product" class="py-2 text-xs" />
+            @elseif($product->has_variants)
                 <a href="{{ $product->url() }}" class="btn-navy w-full py-2 text-xs">Choose options</a>
             @else
                 <form x-data="addToCart(@js($product->id))" @submit.prevent="submit" class="w-full">

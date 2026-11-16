@@ -8,7 +8,9 @@
         <p class="mt-3 text-sm text-slate-600">{{ $product->short_description }}</p>
 
         <div class="mt-5 flex gap-3">
-            @if($product->has_variants)
+            @if(app(\App\Services\WhatsAppService::class)->catalogMode())
+                <x-ask-price :product="$product" class="flex-1" />
+            @elseif($product->has_variants)
                 <a href="{{ $product->url() }}" class="btn-navy flex-1">Choose options</a>
             @else
                 <form x-data="addToCart(@js($product->id))" @submit.prevent="submit(); $root.closest('[x-data]')" class="flex-1">
