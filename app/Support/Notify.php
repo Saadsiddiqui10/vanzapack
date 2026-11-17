@@ -18,6 +18,12 @@ class Notify
         return settings('notification_email') ?: settings('store_sales_email') ?: settings('store_email', config('store.email'));
     }
 
+    /** Where contact-form messages go (Admin → Settings → contact_form_email); falls back to the store inbox. */
+    public static function contactInbox(): ?string
+    {
+        return settings('contact_form_email') ?: self::inbox();
+    }
+
     /**
      * Staff alert: shown in the admin panel (bell) for every active staff user,
      * and emailed once to the store inbox — never to individual staff accounts.

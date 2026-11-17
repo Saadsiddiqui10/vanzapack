@@ -33,6 +33,7 @@
                     <div><label class="label">Subject</label><input name="subject" value="{{ old('subject') }}" class="field"></div>
                 </div>
                 <div><label class="label">Message</label><textarea name="message" rows="5" required class="field">{{ old('message') }}</textarea><x-input-error :messages="$errors->get('message')" class="mt-1" /></div>
+                <x-captcha />
                 <button class="btn-primary">Send message</button>
             </form>
         </div>

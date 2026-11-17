@@ -21,7 +21,7 @@ class ContactAutoReply extends Mailable
     public function envelope(): Envelope
     {
         // If the customer replies to the confirmation, it lands in the store inbox.
-        $inbox = Notify::inbox();
+        $inbox = Notify::contactInbox();
 
         return new Envelope(
             replyTo: $inbox ? [new Address($inbox, settings('store_name', 'VanzaPack'))] : [],
