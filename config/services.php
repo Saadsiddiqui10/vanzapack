@@ -35,10 +35,10 @@ return [
         ],
     ],
 
-    // Cloudflare Turnstile CAPTCHA (free). Without keys the forms fall back to a simple math question.
-    'turnstile' => [
-        'site_key' => env('TURNSTILE_SITE_KEY'),
-        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    // Google reCAPTCHA v2 checkbox (free). Without keys the forms fall back to a simple math question.
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
 ];

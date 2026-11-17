@@ -9,22 +9,23 @@ use Throwable;
 /**
  * Form CAPTCHA.
  *
- * Uses Cloudflare Turnstile when TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY are set,
- * otherwise a simple "What is 4 + 7?" question kept in the session — so forms are
- * protected straight away and upgrade automatically once the keys are added.
+ * Uses Google reCAPTCHA v2 ("I'm not a robot" checkbox) when RECAPTCHA_SITE_KEY /
+ * RECAPTCHA_SECRET_KEY are set, otherwise a simple "What is 4 + 7?" question kept in
+ * the session — so forms are protected straight away and upgrade automatically once
+ * the keys are added.
  */
 class Captcha
 {
     private const SESSION_KEY = 'captcha_answer';
 
-    public static function usesTurnstile(): bool
+    public static function usesRecaptcha(): bool
     {
-        return filled(config('services.turnstile.site_key')) && filled(config('services.turnstile.secret_key'));
+        return filled(config('services.recaptcha.site_key')) && filled(config('services.recaptcha.secret_key'));
     }
 
     public static function siteKey(): ?string
     {
-        return config('services.turnstile.site_key');
+        return config('services.recaptcha.site_key');
     }
 
     /** New math question for the fallback; the answer is stored in the session. */
@@ -38,15 +39,15 @@ class Captcha
 
     public static function passes(Request $request): bool
     {
-        if (self::usesTurnstile()) {
-            $token = (string) $request->input('cf-turnstile-response');
+        if (self::usesRecaptcha()) {
+            $token = (string) $request->input('g-recaptcha-response');
             if ($token === '') {
                 return false;
             }
 
             try {
-                $result = Http::asForm()->timeout(10)->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                    'secret' => config('services.turnstile.secret_key'),
+                $result = Http::asForm()->timeout(10)->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
                     'response' => $token,
                 ])->json();
 
